@@ -1,6 +1,6 @@
 # Poročilo – Naloga 1 (ZK): EventEase
 
-**Ekipa:** Jure Antolič, Lenart Beršnak, Nikolaj Logar
+**Ekipa:** Jure Antolič, Lenart Beršnak
 **Projekt:** EventEase (Praktikum II) – React 19 + Vite (frontend), Zig 0.16 (backend), PostgreSQL 16, nginx, Docker Compose
 **Datum pregleda:** 14. 10. 2026
 
