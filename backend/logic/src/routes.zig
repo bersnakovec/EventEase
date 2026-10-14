@@ -1,31 +1,7 @@
 const std = @import("std");
 const httpz = @import("httpz");
 const App = @import("main.zig").App;
-
-// ----------------------------------------------------------------------------
-// UUID helpers (all string-based, no raw bytes)
-// ----------------------------------------------------------------------------
-
-fn uuidV4Hex(arena: std.mem.Allocator, rng: std.Random) ![]const u8 {
-    var bytes: [16]u8 = undefined;
-    rng.bytes(&bytes);
-    bytes[6] = (bytes[6] & 0x0F) | 0x40;
-    bytes[8] = (bytes[8] & 0x3F) | 0x80;
-    const hex_chars = "0123456789abcdef";
-    var buf: [36]u8 = undefined;
-    var j: usize = 0;
-    for (0..16) |i| {
-        if (i == 4 or i == 6 or i == 8 or i == 10) {
-            buf[j] = '-';
-            j += 1;
-        }
-        buf[j] = hex_chars[bytes[i] >> 4];
-        j += 1;
-        buf[j] = hex_chars[bytes[i] & 0x0F];
-        j += 1;
-    }
-    return arena.dupe(u8, &buf);
-}
+const uuid = @import("uuid.zig");
 
 fn jsonParse(comptime T: type, arena: std.mem.Allocator, body: []const u8) !T {
     return std.json.parseFromSliceLeaky(T, arena, body, .{ .ignore_unknown_fields = true });
@@ -69,52 +45,6 @@ fn buildHtmlEmail(alloc: std.mem.Allocator, body_text: []const u8) ![]const u8 {
         \\</body></html>
     , .{escaped.items});
 }
-//Scammani iz strani railwaya tole bomo mi naredl kr prek httpja
-
-// fn sendEmail(alloc: std.mem.Allocator, io: std.Io, rng: std.Random, to: []const u8, subject: []const u8, body: []const u8) !void {
-//     const content = try std.fmt.allocPrint(alloc,
-//         \\From: poll@yourserver.com
-//         \\To: {s}
-//         \\Subject: {s}
-//         \\
-//         \\{s}
-//     , .{ to, subject, body });
-//     defer alloc.free(content);
-//
-//     var rand_bytes: [8]u8 = undefined;
-//     rng.bytes(&rand_bytes);
-//     const unique = std.fmt.bytesToHex(rand_bytes, .lower);
-//     const filename = try std.fmt.allocPrint(alloc, "/tmp/email_{s}.tmp", .{unique});
-//     defer alloc.free(filename);
-//
-//     const file = try std.Io.Dir.cwd().createFile(io, filename, .{ .read = true, .truncate = true });
-//     defer file.close(io);
-//     defer std.Io.Dir.cwd().deleteFile(io, filename) catch {};
-//
-//     var buf: [4096]u8 = undefined;
-//     var fw = file.writer(io, &buf);
-//     var writer = &fw.interface;
-//     try writer.writeAll(content);
-//     try writer.flush();
-//     try file.sync(io);
-//
-//     const cmd = try std.fmt.allocPrint(alloc, "msmtp --file=/etc/msmtprc --timeout=5 -t < '{s}'", .{filename});
-//     defer alloc.free(cmd);
-//
-//     const result = try std.process.run(alloc, io, .{
-//         .argv = &[_][]const u8{ "sh", "-c", cmd },
-//     });
-//     defer alloc.free(result.stdout);
-//     defer alloc.free(result.stderr);
-//
-//     if (result.term != .exited or result.term.exited != 0) {
-//         std.log.err("msmtp failed: {s}", .{result.stderr});
-//
-//         // --- ADD THIS LINE ---
-//         return error.MsmtpFailed;
-//     }
-// }
-
 fn sendEmail(alloc: std.mem.Allocator, io: std.Io, to: []const u8, subject: []const u8, body: []const u8) !void {
     if (!emailsEnabled()) return;
     const api_key = std.mem.span(std.c.getenv("RESEND_API_KEY") orelse {
@@ -440,9 +370,9 @@ pub fn createPoll(app: *App, req: *httpz.Request, res: *httpz.Response) !void {
         tasks: []const []const u8 = &.{},
     }, res.arena, body);
 
-    const poll_id_str = try uuidV4Hex(res.arena, app.rng);
-    const admin_token_str = try uuidV4Hex(res.arena, app.rng);
-    const share_token_str = try uuidV4Hex(res.arena, app.rng);
+    const poll_id_str = try uuid.uuidV4(res.arena, app.rng);
+    const admin_token_str = try uuid.uuidV4(res.arena, app.rng);
+    const share_token_str = try uuid.uuidV4(res.arena, app.rng);
 
     _ = try app.db.exec(
         \\ INSERT INTO polls (id, title, description, organizer_email, admin_token, share_token)
@@ -450,7 +380,7 @@ pub fn createPoll(app: *App, req: *httpz.Request, res: *httpz.Response) !void {
     , .{ poll_id_str, input.title, input.description, input.organizer_email, admin_token_str, share_token_str });
 
     for (input.time_slots) |slot| {
-        const slot_id_str = try uuidV4Hex(res.arena, app.rng);
+        const slot_id_str = try uuid.uuidV4(res.arena, app.rng);
         _ = try app.db.exec(
             \\ INSERT INTO time_slots (id, poll_id, start_time, end_time)
             \\ VALUES ($1, $2, $3, $4)
@@ -860,7 +790,7 @@ pub fn acceptSuggestion(app: *App, req: *httpz.Request, res: *httpz.Response) !v
     };
 
     // Insert as a real time slot
-    const slot_id_str = try uuidV4Hex(res.arena, app.rng);
+    const slot_id_str = try uuid.uuidV4(res.arena, app.rng);
     _ = conn.exec(
         \\ INSERT INTO time_slots (id, poll_id, start_time, end_time)
         \\ VALUES ($1, $2, $3, $4)
@@ -957,7 +887,7 @@ pub fn submitVote(app: *App, req: *httpz.Request, res: *httpz.Response) !void {
             return err;
         };
     } else {
-        vote_id_str = try uuidV4Hex(res.arena, app.rng);
+        vote_id_str = try uuid.uuidV4(res.arena, app.rng);
         _ = conn.exec(
             \\ INSERT INTO votes (id, poll_id, participant_name, participant_email) VALUES ($1, $2, $3, $4)
         , .{ vote_id_str, poll_id_str, input.participant_name, input.participant_email }) catch |err| {
@@ -967,7 +897,7 @@ pub fn submitVote(app: *App, req: *httpz.Request, res: *httpz.Response) !void {
     }
 
     for (input.date_votes) |dv| {
-        const option_id_str = try uuidV4Hex(res.arena, app.rng);
+        const option_id_str = try uuid.uuidV4(res.arena, app.rng);
         _ = conn.exec(
             \\ INSERT INTO vote_options (id, vote_id, time_slot_id, status)
             \\ VALUES ($1, $2, $3, $4)
@@ -1050,7 +980,7 @@ pub fn suggestDate(app: *App, req: *httpz.Request, res: *httpz.Response) !void {
 
     for (input.dates) |date_str| {
         if (date_str.len == 0) continue;
-        const id_str = try uuidV4Hex(res.arena, app.rng);
+        const id_str = try uuid.uuidV4(res.arena, app.rng);
 
         // If it already has a time component, use it directly
         const start_time = if (std.mem.indexOf(u8, date_str, "T") != null)
