@@ -17,7 +17,7 @@ Oddaja naloge:
 Kot rešitev naloge oddajte izvorno kodo ustvarjenih testov. Teste bomo pogledali tudi na vajah. Navedite katera generativna orodija umetne inteligence, vključno z agenti, ste uporabili pri izdelavi naloge.
 To so navodila naloge, ki se nanašajo na ta repozitorij. Zastavi mi morebitna potrebna vprašanja, da popolnoma pripraviš ustrezne teste.
 
-Za agenta uporabljam Claude Opus 5.5, na Max naročnini.
+Za agenta uporabljam Claude Opus 5.5, effort je nastavljen na Medium.
 ![posnetek zaslona](image.png)
 ![posnetek zaslona 2](image-1.png)
 
