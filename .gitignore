@@ -150,3 +150,5 @@ zig-pkg/
 
 msmtprc
 .env
+# Zig coverage
+backend/logic/coverage

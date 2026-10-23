@@ -1,4 +1,14 @@
 import { useState } from "react";
+import {
+  getDateStr,
+  getTimeStr,
+  getVoteKey,
+  groupByDate,
+  applyVoteStatus,
+  cycleVoteStatus as cycleStatus,
+  formatBackendSlot,
+  toLocalISODate,
+} from "../utils/slotUtils.js";
 
 export default function CalendarPicker({
   selectedDates = [],
@@ -17,7 +27,7 @@ export default function CalendarPicker({
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const todayISO = new Date().toISOString().split("T")[0];
+  const todayISO = toLocalISODate();
 
   const monthNames = [
     "Januar", "Februar", "Marec", "April", "Maj", "Junij",
@@ -30,79 +40,23 @@ export default function CalendarPicker({
   const blankCells = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const getDateStr = (item) => {
-    if (!item) return "";
-    if (typeof item === "string") {
-      return item.includes("T") ? item.split("T")[0] : item.split(" ")[0];
-    }
-    if (item.date) return item.date;
-    if (item.start_time) {
-      return item.start_time.includes("T")
-        ? item.start_time.split("T")[0]
-        : item.start_time.split(" ")[0];
-    }
-    return "";
-  };
-
-  const getTimeStr = (item) => {
-    if (!item) return "";
-    if (item.time) return item.time;
-    if (item.start_time) {
-      const timePart = item.start_time.includes("T")
-        ? item.start_time.split("T")[1]
-        : item.start_time.split(" ")[1];
-      if (timePart) return timePart.substring(0, 5);
-    }
-    return "12:00";
-  };
-
   const selectedDateStrings = selectedDates.map(getDateStr);
-  const groupedSelectedDates = selectedDates.reduce((acc, item) => {
-    const dateStr = getDateStr(item);
-    if (!dateStr) return acc;
-    if (!acc[dateStr]) acc[dateStr] = [];
-    acc[dateStr].push(item);
-    return acc;
-  }, {});
-  const groupedSuggestions = suggestions.reduce((acc, item) => {
-    const dateStr = getDateStr(item) || item.date;
-    if (!dateStr) return acc;
-    if (!acc[dateStr]) acc[dateStr] = [];
-    acc[dateStr].push(item);
-    return acc;
-  }, {});
+  const groupedSelectedDates = groupByDate(selectedDates);
+  const groupedSuggestions = groupByDate(suggestions);
 
   const getTimeLabel = (item) => {
     return getTimeStr(item);
   };
 
-  const getVoteKey = (item) => item?.id || getDateStr(item);
-
   const setVoteStatus = (item, nextStatus) => {
     if (!onDateStatusesChange) return;
     const key = getVoteKey(item);
     if (!key) return;
-
-    const updatedStatuses = { ...dateStatuses };
-    if (!nextStatus || nextStatus === "no") {
-      delete updatedStatuses[key];
-    } else {
-      updatedStatuses[key] = nextStatus;
-    }
-
-    onDateStatusesChange(updatedStatuses);
+    onDateStatusesChange(applyVoteStatus(dateStatuses, key, nextStatus));
   };
 
   const cycleVoteStatus = (item) => {
-    const key = getVoteKey(item);
-    const currentStatus = dateStatuses[key] || "no";
-    const nextStatus =
-      currentStatus === "no"
-        ? "yes"
-        : currentStatus === "yes"
-          ? "if_needed"
-          : "no";
-    setVoteStatus(item, nextStatus);
+    cycleStatus(item, dateStatuses, onDateStatusesChange);
   };
 
   const voteStatusLabel = (status) => {
@@ -115,18 +69,6 @@ export default function CalendarPicker({
     yes: "bg-green-500 text-white hover:bg-green-600",
     if_needed: "bg-yellow-400 text-gray-900 hover:bg-yellow-500",
     no: "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600",
-  };
-
-  const formatBackendSlot = (dateStr, timeStr) => {
-    const startTimeStr = `${dateStr}T${timeStr}:00`;
-    const [hours, minutes] = timeStr.split(":").map(Number);
-    const endHours = String((hours + 1) % 24).padStart(2, "0");
-    const endTimeStr = `${dateStr}T${endHours}:${String(minutes).padStart(2, "0")}:00`;
-
-    return {
-      start_time: startTimeStr,
-      end_time: endTimeStr,
-    };
   };
 
   const handleDateClick = (day, dayItems = []) => {
@@ -162,24 +104,7 @@ export default function CalendarPicker({
 
     if (allowedDates) {
       const matchedSlot = selectedDates.find((d) => getDateStr(d) === dateStr);
-      const key = matchedSlot?.id || dateStr;
-
-      const currentStatus = dateStatuses[key] || "no";
-      const nextStatus =
-        currentStatus === "no"
-          ? "yes"
-          : currentStatus === "yes"
-            ? "if_needed"
-            : "no";
-
-      const updatedStatuses = { ...dateStatuses };
-      if (nextStatus === "no") {
-        delete updatedStatuses[key];
-      } else {
-        updatedStatuses[key] = nextStatus;
-      }
-
-      if (onDateStatusesChange) onDateStatusesChange(updatedStatuses);
+      cycleVoteStatus(matchedSlot || dateStr);
       return;
     }
 
@@ -203,6 +128,7 @@ export default function CalendarPicker({
   };
 
   const handleTimeChange = (dateStr, newTime) => {
+    if (!newTime) return; // cleared <input type="time">
     setLastSelectedTime(newTime);
     const activeIndex = selectedDates.findIndex((d) => getDateStr(d) === dateStr);
     if (activeIndex === -1) return;

@@ -24,7 +24,33 @@ jobs:
 
       - run: npm ci
       - run: npm run lint
-      - run: npm test
+
+      # Neuspešen test ali pokritost pod pragom (90 % vrstic/funkcij, 85 % vej) ustavi cevovod.
+      - name: Unit tests + coverage
+        run: |
+          set -o pipefail
+          npm run test:coverage | tee test-output.txt
+
+      - name: Coverage summary
+        if: always()
+        run: |
+          {
+            echo "### Frontend unit test coverage"
+            echo '```'
+            sed -n '/start of coverage report/,/end of coverage report/p' test-output.txt | sed 's/^ℹ //'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: |
+            frontend/EventEase/coverage/lcov.info
+            frontend/EventEase/test-output.txt
+          if-no-files-found: warn
+
       - run: npm run build
 
   backend:
@@ -41,7 +67,33 @@ jobs:
           version: 0.16.0
 
       - run: zig build
-      - run: zig build test
+
+      # Neuspešen test ustavi cevovod.
+      - run: zig build test --summary all
+
+      - name: Coverage (kcov)
+        run: |
+          zig build test-bin
+          mkdir -p coverage
+          for t in zig-out/bin/*-tests; do
+            docker run --rm --security-opt seccomp=unconfined \
+              -v "$PWD:$PWD" -w "$PWD" kcov/kcov:latest \
+              kcov --include-path="$PWD/src" "coverage/$(basename "$t")" "$t"
+          done
+          docker run --rm -v "$PWD:$PWD" -w "$PWD" kcov/kcov:latest \
+            kcov --merge coverage/merged coverage/*-tests
+          sudo chown -R "$(id -u):$(id -g)" coverage
+
+      - name: Coverage summary + threshold
+        run: python3 ../../scripts/zig-coverage-summary.py coverage/merged/kcov-merged/coverage.json 90
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/logic/coverage/merged
+          if-no-files-found: warn
 
   docker-smoke:
     name: Docker + API smoke

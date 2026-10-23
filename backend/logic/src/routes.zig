@@ -2,6 +2,7 @@ const std = @import("std");
 const httpz = @import("httpz");
 const App = @import("main.zig").App;
 const uuid = @import("uuid.zig");
+const ics_mod = @import("ics.zig");
 
 fn jsonParse(comptime T: type, arena: std.mem.Allocator, body: []const u8) !T {
     return std.json.parseFromSliceLeaky(T, arena, body, .{ .ignore_unknown_fields = true });
@@ -330,7 +331,8 @@ fn sendParticipantFinalizationEmail(
     , .{ participant_name, poll_title, final_slot_start, final_slot_end });
     defer alloc.free(body);
 
-    const ics = try buildIcsContent(alloc, poll_title, final_slot_start, final_slot_end);
+    const now_unix = std.Io.Clock.real.now(io).toSeconds();
+    const ics = try ics_mod.buildIcsContent(alloc, poll_title, final_slot_start, final_slot_end, now_unix);
     defer alloc.free(ics);
 
     try sendEmailWithIcs(alloc, io, participant_email, subject, body, ics);
@@ -659,45 +661,6 @@ pub fn getAdminPoll(app: *App, req: *httpz.Request, res: *httpz.Response) !void 
         .suggestions = suggestions,
     }, .{});
 }
-// funkcije za koledar
-fn formatIcsTimestamp(buf: []u8, iso: []const u8) []const u8 {
-    // Convert "2024-06-15T14:00:00Z" → "20240615T140000Z"
-    var out_i: usize = 0;
-    for (iso) |c| {
-        if (c == '-' or c == ':') continue;
-        buf[out_i] = c;
-        out_i += 1;
-    }
-    return buf[0..out_i];
-}
-
-fn buildIcsContent(
-    alloc: std.mem.Allocator,
-    poll_title: []const u8,
-    start_time: []const u8,
-    end_time: []const u8,
-) ![]const u8 {
-    var start_buf: [32]u8 = undefined;
-    var end_buf: [32]u8 = undefined;
-    const start_ics = formatIcsTimestamp(&start_buf, start_time);
-    const end_ics = formatIcsTimestamp(&end_buf, end_time);
-
-    return std.fmt.allocPrint(alloc,
-        \\BEGIN:VCALENDAR
-        \\VERSION:2.0
-        \\PRODID:-//EventEase//Poll//EN
-        \\METHOD:REQUEST
-        \\BEGIN:VEVENT
-        \\UID:{s}-{s}@eventease
-        \\DTSTART:{s}
-        \\DTEND:{s}
-        \\SUMMARY:{s}
-        \\DESCRIPTION:This event was scheduled via a poll.
-        \\END:VEVENT
-        \\END:VCALENDAR
-    , .{ start_time, poll_title, start_ics, end_ics, poll_title });
-}
-
 pub fn shareEmail(app: *App, req: *httpz.Request, res: *httpz.Response) !void {
     const body = req.body() orelse {
         res.status = 400;

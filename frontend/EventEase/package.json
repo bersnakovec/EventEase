@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "test": "node --test src/**/*.test.js",
+    "test": "node --test \"src/**/*.test.js\"",
+    "test:coverage": "node -e \"require('fs').mkdirSync('coverage',{recursive:true})\" && node --test --experimental-test-coverage \"--test-coverage-include=src/utils/**\" \"--test-coverage-exclude=src/**/*.test.js\" --test-coverage-lines=90 --test-coverage-branches=85 --test-coverage-functions=90 --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info \"src/**/*.test.js\"",
     "preview": "vite preview"
   },
   "dependencies": {
