@@ -1,6 +1,6 @@
 # Poročilo – Naloga 2 (ZK): Testi enot za EventEase
 
-**Ekipa:** Jure Antolič, Lenart Beršnak, Nikolaj Logar
+**Ekipa:** Jure Antolič, Lenart Beršnak
 **Projekt:** EventEase – React 19 + Vite (frontend), Zig 0.16 (backend)
 **Datum:** 23. 10. 2026
 
