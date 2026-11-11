@@ -1,0 +1,15 @@
+{
+  "name": "eventease-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Funkcionalni (E2E) testni scenariji za EventEase – naloga 3",
+  "scripts": {
+    "env:up": "docker compose -p eventease-e2e -f ../compose.yaml -f compose.e2e.yaml up -d --build --wait",
+    "env:down": "docker compose -p eventease-e2e -f ../compose.yaml -f compose.e2e.yaml down -v",
+    "test": "playwright test",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}

@@ -119,3 +119,46 @@ jobs:
 
       - if: always()
         run: docker compose down -v
+
+  # Funkcionalni testni scenariji (naloga 3). Znane napake so označene s test.fail (INC-xx):
+  # cevovod pade ob novi napaki ALI ko znana napaka nepričakovano izgine (oznako je treba odstraniti).
+  e2e:
+    name: Funkcionalni testi (Playwright)
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    defaults:
+      run:
+        working-directory: e2e
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Testno okolje (e-pošta v odložišče, ne navzven)
+        run: |
+          mkdir -p .outbox && chmod 777 .outbox
+          chmod +x fake-curl.sh
+          npm run env:up
+
+      - run: npm test
+
+      - name: Upload E2E report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report
+          path: |
+            e2e/playwright-report
+            e2e/rezultati
+            e2e/dokazi
+          if-no-files-found: warn
+
+      - if: always()
+        run: npm run env:down

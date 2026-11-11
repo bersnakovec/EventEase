@@ -1,0 +1,23 @@
+# Testno okolje za funkcionalne (E2E) teste – naloga 3.
+# Zagon (iz mape e2e/):  npm run env:up      Ustavitev:  npm run env:down
+#
+# E-pošta: backend pošilja prek `curl` na api.resend.com. V testnem okolju
+#  - je pošiljanje vklopljeno (DISABLE_EMAILS=false), da se e-pošta in .ics dejansko zgradita,
+#  - `curl` zamenja testni dvojnik (fake-curl.sh), ki e-pošto zapiše v e2e/.outbox/,
+#  - je api.resend.com preusmerjen na 127.0.0.1 (varovalka: nič ne zapusti vsebnika).
+services:
+  app:
+    environment:
+      DISABLE_EMAILS: "false"
+    extra_hosts:
+      - "api.resend.com:127.0.0.1"
+    volumes:
+      - ./e2e/fake-curl.sh:/usr/local/bin/curl:ro
+      - ./e2e/.outbox:/tmp/outbox
+
+  # Baza in Mailpit nista izpostavljena gostitelju (trk z lokalnim PostgreSQL na 5432;
+  # Mailpit backend sploh ne uporablja).
+  db:
+    ports: !reset []
+  mailpit:
+    ports: !reset []
