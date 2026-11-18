@@ -124,7 +124,9 @@ jobs:
   # cevovod pade ob novi napaki ALI ko znana napaka nepričakovano izgine (oznako je treba odstraniti).
   e2e:
     name: Funkcionalni testi (Playwright)
-    runs-on: ubuntu-latest
+    # Fiksno 24.04: ubuntu-latest je od 10/2026 Ubuntu 26, ki ga Playwright 1.56 (--with-deps) še ne podpira.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     needs: [frontend, backend]
     defaults:
       run:

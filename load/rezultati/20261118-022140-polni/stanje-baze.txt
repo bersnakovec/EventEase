@@ -1,0 +1,3 @@
+ankete|100
+glasovi|11028
+izbire|44112

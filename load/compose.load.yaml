@@ -1,0 +1,13 @@
+# Testno okolje za obremenitveni test (JMeter) – naloga 4.
+# Zagon: glej load/run.sh. Ločen projekt (eventease-load), da ne trči z razvojnim/E2E okoljem.
+#  - aplikacija je na gostitelju izpostavljena na vratih 8090,
+#  - baza in Mailpit nista izpostavljena (trk z lokalnim PostgreSQL na 5432),
+#  - e-pošta je izklopljena (DISABLE_EMAILS=true že v compose.yaml), da merimo samo aplikacijo in bazo.
+services:
+  app:
+    ports: !override
+      - "8090:8080"
+  db:
+    ports: !reset []
+  mailpit:
+    ports: !reset []

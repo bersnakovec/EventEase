@@ -152,3 +152,7 @@ msmtprc
 .env
 # Zig coverage
 backend/logic/coverage
+
+# Obremenitveni test (naloga 4)
+load/.jmeter/
+load/rezultati/*/rezultati.jtl

@@ -1,0 +1,3 @@
+ankete|10
+glasovi|50
+izbire|200

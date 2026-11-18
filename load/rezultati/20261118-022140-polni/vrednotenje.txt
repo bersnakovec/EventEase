@@ -1,0 +1,30 @@
+
+Metrike po nivojih (celoten nivo, vključno z ramp-up)
+Skupina             Vzorci  Napake  Povp. ms  p50  p90  p95  p99  Max  zahtevkov/s
+------------------  ------  ------  --------  ---  ---  ---  ---  ---  -----------
+Nivo 1 (vse)        1403    0.00 %  8         6    22   23   25   37   5.9        
+  GET odpri anketo  705     0.00 %  4         3    5    5    6    7    3.0        
+  POST oddaj glas   698     0.00 %  12        8    23   23   33   37   2.9        
+Nivo 2 (vse)        6978    0.00 %  8         8    12   14   18   58   29.2       
+  GET odpri anketo  3508    0.00 %  9         9    14   15   17   20   14.7       
+  POST oddaj glas   3470    0.00 %  8         7    8    9    22   58   14.6       
+Nivo 3 (vse)        13789   0.00 %  16        14   31   34   39   85   57.8       
+  GET odpri anketo  6929    0.00 %  25        24   34   36   41   74   29.0       
+  POST oddaj glas   6860    0.00 %  8         7    8    9    27   85   28.9       
+
+Metrike v ustaljenem stanju (vse niti nivoja aktivne)
+Skupina          Vzorci  Napake  Povp. ms  p50  p90  p95  p99  Max  zahtevkov/s
+---------------  ------  ------  --------  ---  ---  ---  ---  ---  -----------
+Nivo 1 (10 VU)   1212    0.00 %  8         6    22   23   25   37   6.6        
+Nivo 2 (50 VU)   5924    0.00 %  9         8    13   14   17   58   33.1       
+Nivo 3 (100 VU)  11683   0.00 %  17        15   32   35   40   85   65.6       
+
+Kriteriji: p95 < 500 ms in delež napak < 1 % (ustaljeno stanje)
+  Nivo 1 (10 VU): p95 = 23 ms ✓, napake = 0.00 % ✓ → USTREZA
+  Nivo 2 (50 VU): p95 = 14 ms ✓, napake = 0.00 % ✓ → USTREZA
+  Nivo 3 (100 VU): p95 = 35 ms ✓, napake = 0.00 % ✓ → USTREZA
+
+Viri vsebnikov (docker stats):
+  eventease-load-app-1: CPE povp. 11.7 %, max 45.4 % | RAM začetek 5.0 MiB, max 10.8 MiB, konec 9.6 MiB
+  eventease-load-db-1: CPE povp. 21.9 %, max 95.7 % | RAM začetek 40.1 MiB, max 49.5 MiB, konec 49.3 MiB
+  eventease-load-mailpit-1: CPE povp. 0.2 %, max 2.9 % | RAM začetek 7.2 MiB, max 8.5 MiB, konec 7.6 MiB
