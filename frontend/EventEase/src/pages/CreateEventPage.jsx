@@ -112,11 +112,6 @@ export default function CreateEventWizard({ onCancel }) {
     }
     setNotice(null);
 
-    if (!pollDates || pollDates.length === 0) {
-      setNotice({ type: 'error', message: 'Prosimo, izberite vsaj en termin na koledarju.' });
-      return;
-    }
-
     const timeSlots = pollDates.map(item => {
       if (!item.start_time) {
         return {
