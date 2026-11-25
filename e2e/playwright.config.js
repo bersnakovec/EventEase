@@ -9,10 +9,13 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   globalSetup: "./global-setup.js",
+  // Rezultati: konzola (list), HTML za ljudi, JSON + JUnit XML za orodja; v CI še opombe GitHub Actions.
   reporter: [
-    ["list"],
+    [process.env.CI ? "github" : "list"],
+    ...(process.env.CI ? [["list"]] : []),
     ["html", { open: "never" }],
     ["json", { outputFile: "rezultati/rezultati.json" }],
+    ["junit", { outputFile: "rezultati/junit.xml" }],
   ],
   use: {
     ...devices["Desktop Chrome"],

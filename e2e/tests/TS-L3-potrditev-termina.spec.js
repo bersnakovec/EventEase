@@ -118,7 +118,8 @@ test.describe("TS-L3 Potrditev termina in .ics", () => {
 
     await test.step("5. E-pošta: organizator + udeleženci z e-naslovom (ne Bor)", async () => {
       const mails = finalizedMails(poll.title);
-      expect(mails.map((m) => m.to).sort()).toEqual([ANA, CENE, ORGANIZER].sort());
+      // toStrictEqual: toEqual bi spregledal e-pošto brez prejemnika (to = undefined) – odkrito z mutacijo M3 (naloga 5).
+      expect(mails.map((m) => m.to).sort()).toStrictEqual([ANA, CENE, ORGANIZER].sort());
       const org = mails.find((m) => m.to === ORGANIZER);
       for (const name of ["Ana", "Bor", "Cene"]) expect(org.raw).toContain(`- ${name}`);
     });

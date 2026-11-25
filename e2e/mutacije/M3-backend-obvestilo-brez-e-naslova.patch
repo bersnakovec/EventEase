@@ -1,0 +1,12 @@
+diff --git a/backend/logic/src/routes.zig b/backend/logic/src/routes.zig
+index 0fa613a..014dc3b 100644
+--- a/backend/logic/src/routes.zig
++++ b/backend/logic/src/routes.zig
+@@ -1047,7 +1047,6 @@ pub fn finalizePoll(app: *App, req: *httpz.Request, res: *httpz.Response) !void
+     };
+ 
+     for (participant_emails.items, participant_names.items) |email, name| {
+-        if (email.len == 0) continue; // add this line
+         sendParticipantFinalizationEmail(res.arena, app.io, email, name, poll_title, final_start, final_end) catch |err| {
+             std.log.err("Failed to send finalization email to {s}: {}", .{ name, err });
+         };

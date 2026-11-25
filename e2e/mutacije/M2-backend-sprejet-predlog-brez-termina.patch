@@ -1,0 +1,19 @@
+diff --git a/backend/logic/src/routes.zig b/backend/logic/src/routes.zig
+index 0fa613a..55173ff 100644
+--- a/backend/logic/src/routes.zig
++++ b/backend/logic/src/routes.zig
+@@ -754,13 +754,7 @@ pub fn acceptSuggestion(app: *App, req: *httpz.Request, res: *httpz.Response) !v
+ 
+     // Insert as a real time slot
+     const slot_id_str = try uuid.uuidV4(res.arena, app.rng);
+-    _ = conn.exec(
+-        \\ INSERT INTO time_slots (id, poll_id, start_time, end_time)
+-        \\ VALUES ($1, $2, $3, $4)
+-    , .{ slot_id_str, poll_id_str, start_time, end_time }) catch |err| {
+-        if (conn.err) |pg_err| std.log.err("acceptSuggestion [insert slot] PG error: {s}", .{pg_err.message});
+-        return err;
+-    };
++    _ = .{ poll_id_str, start_time, end_time };
+ 
+     // Mark suggestion as accepted
+     _ = conn.exec(

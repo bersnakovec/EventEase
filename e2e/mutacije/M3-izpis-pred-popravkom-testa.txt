@@ -1,0 +1,110 @@
+
+Running 18 tests using 1 worker
+
+  ok  1 tests\TS-L1-ustvarjanje-ankete.spec.js:19:3 › TS-L1 Ustvarjanje ankete › TC-L1-01: organizator ustvari anketo z dvema terminoma in prejme obe povezavi (1.8s)
+  ok  2 tests\TS-L1-ustvarjanje-ankete.spec.js:90:3 › TS-L1 Ustvarjanje ankete › TC-L1-02: brez obveznih podatkov anketa ni ustvarjena (1.7s)
+  x   3 tests\TS-L1-ustvarjanje-ankete.spec.js:124:3 › TS-L1 Ustvarjanje ankete › TC-L1-03: neveljaven e-naslov organizatorja je zavrnjen [INC-01] (4.2s)
+  x   4 tests\TS-L1-ustvarjanje-ankete.spec.js:143:3 › TS-L1 Ustvarjanje ankete › TC-L1-04: naslov iz samih presledkov je zavrnjen [INC-02] (4.2s)
+  x   5 tests\TS-L1-ustvarjanje-ankete.spec.js:162:3 › TS-L1 Ustvarjanje ankete › TC-L1-05: strežnik (API) zavrne neveljavno anketo [INC-03] (57ms)
+  ok  6 tests\TS-L2-predlog-termina.spec.js:30:3 › TS-L2 Predlog termina in sprejem › TC-L2-01: predloga ni mogoče poslati brez imena ali brez datuma (703ms)
+  ok  7 tests\TS-L2-predlog-termina.spec.js:65:3 › TS-L2 Predlog termina in sprejem › TC-L2-02: udeleženec predlaga termin, organizator ga sprejme, termin je na voljo za glasovanje (1.9s)
+  x   8 tests\TS-L2-predlog-termina.spec.js:149:3 › TS-L2 Predlog termina in sprejem › TC-L2-03: sprejeti termin ima enako trajanje kot ostali termini [INC-04] (625ms)
+  x   9 tests\TS-L2-predlog-termina.spec.js:171:3 › TS-L2 Predlog termina in sprejem › TC-L2-04: zavrnjen predlog ostane zavrnjen po ponovnem nalaganju [INC-05] (3.6s)
+  x  10 tests\TS-L2-predlog-termina.spec.js:194:3 › TS-L2 Predlog termina in sprejem › TC-L2-05: podrobnosti predloga prikažejo predlagani datum in uro [INC-06] (3.5s)
+  ok 11 tests\TS-L3-potrditev-termina.spec.js:69:3 › TS-L3 Potrditev termina in .ics › TC-L3-01: termina ni mogoče potrditi brez izbire; rezultati glasovanja so prikazani (545ms)
+  ok 12 tests\TS-L3-potrditev-termina.spec.js:96:3 › TS-L3 Potrditev termina in .ics › TC-L3-02: organizator potrdi termin, udeleženci z e-pošto prejmejo .ics (1.0s)
+  x  13 tests\TS-L3-potrditev-termina.spec.js:165:3 › TS-L3 Potrditev termina in .ics › TC-L3-03: obvestilo udeležencu je veljavna zahteva za ponudnika e-pošte [INC-07] (132ms)
+  x  14 tests\TS-L3-potrditev-termina.spec.js:181:3 › TS-L3 Potrditev termina in .ics › TC-L3-04: zaključene ankete ni mogoče ponovno potrditi (273ms)
+  x  15 tests\TS-L3-potrditev-termina.spec.js:200:3 › TS-L3 Potrditev termina in .ics › TC-L3-05: po potrditvi glasovanje ni več mogoče [INC-08] (222ms)
+  x  16 tests\TS-L3-potrditev-termina.spec.js:217:3 › TS-L3 Potrditev termina in .ics › TC-L3-06: potrditev s terminom, ki ne pripada anketi, je zavrnjena [INC-09] (294ms)
+  x  17 tests\TS-L3-potrditev-termina.spec.js:236:3 › TS-L3 Potrditev termina in .ics › TC-L3-07: potrditev sprejetega predloga obvesti udeležence z .ics [INC-10] (787ms)
+  x  18 tests\TS-L3-potrditev-termina.spec.js:278:3 › TS-L3 Potrditev termina in .ics › TC-L3-08: čas v .ics ustreza izbranemu lokalnemu terminu [INC-11] (167ms)
+
+
+  1) tests\TS-L3-potrditev-termina.spec.js:181:3 › TS-L3 Potrditev termina in .ics › TC-L3-04: zaključene ankete ni mogoče ponovno potrditi 
+
+    Error: expect(received).toHaveLength(expected)
+
+    Expected length: 3
+    Received length: 4
+    Received array:  [{"attachmentName": null, "file": "1795611556-168.json", "ics": null, "raw": "{\"from\":\"EventEase <onboarding@resend.dev>\",\"to\":[\"organizator@eventease.test\"],\"subject\":\"Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0\",\"html\":\"<!DOCTYPE html>\\n<html><head><meta charset=\\\"utf-8\\\"></head>\\n<body style=\\\"font-family:sans-serif;max-width:520px;margin:40px auto;color:#1a1a1a;\\\">\\n  <img src=\\\"https://eventease-production-5c24.up.railway.app/EventEaseIkoncaEmail.png\\\"\\n       alt=\\\"EventEase\\\" width=\\\"200\\\" style=\\\"margin-bottom:32px;\\\">\\n  <div style=\\\"font-size:15px;line-height:1.7;\\\">Glasovanje za \\\"Sestanek ekipe, ponovna potrditev 4qsz0\\\" je zaključeno!<br><br>Izbrani termin: 2026-12-10 14:00:00+00 - 2026-12-10 15:00:00+00<br><br>Udeleženci:<br>- Ana<br>- Bor<br>- Cene<br><br><br>Vsi udeleženci so prejeli obvestilo z izbranim terminom.<br><br>Lep pozdrav,<br>Ekipa EventEase</div>\\n  <hr style=\\\"margin:32px 0;border:none;border-top:1px solid #eee;\\\">\\n  <p style=\\\"font-size:12px;color:#999;\\\">\\n    EventEase &mdash; Enostavno usklajevanje terminov\\n  </p>\\n</body></html>\"}
+    ", "subject": "Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0", "to": "organizator@eventease.test", "validJson": true}, {"attachmentName": "event.ics", "file": "1795611556-172.json", "ics": "BEGIN:VCALENDAR·
+    VERSION:2.0·
+    PRODID:-//EventEase//Poll//EN·
+    METHOD:REQUEST·
+    BEGIN:VEVENT·
+    UID:20261210T140000Z-216f29a19ea391a5@eventease·
+    DTSTAMP:20261125T125916Z·
+    DTSTART:20261210T140000Z·
+    DTEND:20261210T150000Z·
+    SUMMARY:Sestanek ekipe\\, ponovna potrditev 4qsz0·
+    DESCRIPTION:This event was scheduled via a poll.·
+    END:VEVENT·
+    END:VCALENDAR·
+    ", "raw": "{\"from\":\"EventEase <onboarding@resend.dev>\",\"to\":[\"ana.4qsz0@eventease.test\"],\"subject\":\"Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0\",\"text\":\"Pozdravljeni Ana,·
+    termin za \"Sestanek ekipe, ponovna potrditev 4qsz0\" je potrjen.·
+    Izbrani termin: 2026-12-10 14:00:00+00 - 2026-12-10 15:00:00+00·
+    V prilogi najdete datoteko .ics za uvoz v vaš koledar.·
+    Vidimo se!
+    Ekipa EventEase\",\"attachments\":[{\"filename\":\"event.ics\",\"content\":\"QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL0V2ZW50RWFzZS8vUG9sbC8vRU4NCk1FVEhPRDpSRVFVRVNUDQpCRUdJTjpWRVZFTlQNClVJRDoyMDI2MTIxMFQxNDAwMDBaLTIxNmYyOWExOWVhMzkxYTVAZXZlbnRlYXNlDQpEVFNUQU1QOjIwMjYxMTI1VDEyNTkxNloNCkRUU1RBUlQ6MjAyNjEyMTBUMTQwMDAwWg0KRFRFTkQ6MjAyNjEyMTBUMTUwMDAwWg0KU1VNTUFSWTpTZXN0YW5layBla2lwZVwsIHBvbm92bmEgcG90cmRpdGV2IDRxc3owDQpERVNDUklQVElPTjpUaGlzIGV2ZW50IHdhcyBzY2hlZHVsZWQgdmlhIGEgcG9sbC4NCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==\"}]}", "subject": "Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0", "to": "ana.4qsz0@eventease.test", "validJson": false}, {"attachmentName": "event.ics", "file": "1795611556-175.json", "ics": "BEGIN:VCALENDAR·
+    VERSION:2.0·
+    PRODID:-//EventEase//Poll//EN·
+    METHOD:REQUEST·
+    BEGIN:VEVENT·
+    UID:20261210T140000Z-216f29a19ea391a5@eventease·
+    DTSTAMP:20261125T125916Z·
+    DTSTART:20261210T140000Z·
+    DTEND:20261210T150000Z·
+    SUMMARY:Sestanek ekipe\\, ponovna potrditev 4qsz0·
+    DESCRIPTION:This event was scheduled via a poll.·
+    END:VEVENT·
+    END:VCALENDAR·
+    ", "raw": "{\"from\":\"EventEase <onboarding@resend.dev>\",\"to\":[\"\"],\"subject\":\"Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0\",\"text\":\"Pozdravljeni Bor,·
+    termin za \"Sestanek ekipe, ponovna potrditev 4qsz0\" je potrjen.·
+    Izbrani termin: 2026-12-10 14:00:00+00 - 2026-12-10 15:00:00+00·
+    V prilogi najdete datoteko .ics za uvoz v vaš koledar.·
+    Vidimo se!
+    Ekipa EventEase\",\"attachments\":[{\"filename\":\"event.ics\",\"content\":\"QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL0V2ZW50RWFzZS8vUG9sbC8vRU4NCk1FVEhPRDpSRVFVRVNUDQpCRUdJTjpWRVZFTlQNClVJRDoyMDI2MTIxMFQxNDAwMDBaLTIxNmYyOWExOWVhMzkxYTVAZXZlbnRlYXNlDQpEVFNUQU1QOjIwMjYxMTI1VDEyNTkxNloNCkRUU1RBUlQ6MjAyNjEyMTBUMTQwMDAwWg0KRFRFTkQ6MjAyNjEyMTBUMTUwMDAwWg0KU1VNTUFSWTpTZXN0YW5layBla2lwZVwsIHBvbm92bmEgcG90cmRpdGV2IDRxc3owDQpERVNDUklQVElPTjpUaGlzIGV2ZW50IHdhcyBzY2hlZHVsZWQgdmlhIGEgcG9sbC4NCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==\"}]}", "subject": "Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0", "to": undefined, "validJson": false}, {"attachmentName": "event.ics", "file": "1795611556-178.json", "ics": "BEGIN:VCALENDAR·
+    VERSION:2.0·
+    PRODID:-//EventEase//Poll//EN·
+    METHOD:REQUEST·
+    BEGIN:VEVENT·
+    UID:20261210T140000Z-216f29a19ea391a5@eventease·
+    DTSTAMP:20261125T125916Z·
+    DTSTART:20261210T140000Z·
+    DTEND:20261210T150000Z·
+    SUMMARY:Sestanek ekipe\\, ponovna potrditev 4qsz0·
+    DESCRIPTION:This event was scheduled via a poll.·
+    END:VEVENT·
+    END:VCALENDAR·
+    ", "raw": "{\"from\":\"EventEase <onboarding@resend.dev>\",\"to\":[\"cene.4qsz0@eventease.test\"],\"subject\":\"Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0\",\"text\":\"Pozdravljeni Cene,·
+    termin za \"Sestanek ekipe, ponovna potrditev 4qsz0\" je potrjen.·
+    Izbrani termin: 2026-12-10 14:00:00+00 - 2026-12-10 15:00:00+00·
+    V prilogi najdete datoteko .ics za uvoz v vaš koledar.·
+    Vidimo se!
+    Ekipa EventEase\",\"attachments\":[{\"filename\":\"event.ics\",\"content\":\"QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL0V2ZW50RWFzZS8vUG9sbC8vRU4NCk1FVEhPRDpSRVFVRVNUDQpCRUdJTjpWRVZFTlQNClVJRDoyMDI2MTIxMFQxNDAwMDBaLTIxNmYyOWExOWVhMzkxYTVAZXZlbnRlYXNlDQpEVFNUQU1QOjIwMjYxMTI1VDEyNTkxNloNCkRUU1RBUlQ6MjAyNjEyMTBUMTQwMDAwWg0KRFRFTkQ6MjAyNjEyMTBUMTUwMDAwWg0KU1VNTUFSWTpTZXN0YW5layBla2lwZVwsIHBvbm92bmEgcG90cmRpdGV2IDRxc3owDQpERVNDUklQVElPTjpUaGlzIGV2ZW50IHdhcyBzY2hlZHVsZWQgdmlhIGEgcG9sbC4NCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==\"}]}", "subject": "Poll finalized: Sestanek ekipe, ponovna potrditev 4qsz0", "to": "cene.4qsz0@eventease.test", "validJson": false}]
+
+      163 |     expect(await again.text()).toContain("already been finalized");
+      164 |     expect((await apiGetPoll(request, poll.share_token)).final_slot_id).toBe(poll.s1.id);
+    > 165 |     expect(finalizedMails(poll.title)).toHaveLength(3); // ni dodatnih obvestil
+          |                                        ^
+      166 |
+      167 |     await page.goto(adminUrl(poll));
+      168 |     await expect(page.getByText("Glasovanje zaključeno")).toBeVisible();
+        at C:\Users\lenar\Documents\Šola\FERI\3. Letnik\ZK\Repo\EventEase\e2e\tests\TS-L3-potrditev-termina.spec.js:165:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\TS-L3-potrditev-termina-TS-ef92e--ni-mogoče-ponovno-potrditi\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\TS-L3-potrditev-termina-TS-ef92e--ni-mogoče-ponovno-potrditi\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\TS-L3-potrditev-termina-TS-ef92e--ni-mogoče-ponovno-potrditi\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests\TS-L3-potrditev-termina.spec.js:181:3 › TS-L3 Potrditev termina in .ics › TC-L3-04: zaključene ankete ni mogoče ponovno potrditi 
+  17 passed (31.2s)

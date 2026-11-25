@@ -151,6 +151,10 @@ jobs:
 
       - run: npm test
 
+      - name: Povzetek E2E
+        if: always()
+        run: node povzetek.js >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload E2E report
         if: always()
         uses: actions/upload-artifact@v4

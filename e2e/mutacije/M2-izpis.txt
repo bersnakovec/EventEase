@@ -1,0 +1,111 @@
+
+Running 18 tests using 1 worker
+
+  ok  1 tests\TS-L1-ustvarjanje-ankete.spec.js:19:3 › TS-L1 Ustvarjanje ankete › TC-L1-01: organizator ustvari anketo z dvema terminoma in prejme obe povezavi (1.9s)
+  ok  2 tests\TS-L1-ustvarjanje-ankete.spec.js:90:3 › TS-L1 Ustvarjanje ankete › TC-L1-02: brez obveznih podatkov anketa ni ustvarjena (1.9s)
+  x   3 tests\TS-L1-ustvarjanje-ankete.spec.js:124:3 › TS-L1 Ustvarjanje ankete › TC-L1-03: neveljaven e-naslov organizatorja je zavrnjen [INC-01] (4.3s)
+  x   4 tests\TS-L1-ustvarjanje-ankete.spec.js:143:3 › TS-L1 Ustvarjanje ankete › TC-L1-04: naslov iz samih presledkov je zavrnjen [INC-02] (4.2s)
+  x   5 tests\TS-L1-ustvarjanje-ankete.spec.js:162:3 › TS-L1 Ustvarjanje ankete › TC-L1-05: strežnik (API) zavrne neveljavno anketo [INC-03] (57ms)
+  ok  6 tests\TS-L2-predlog-termina.spec.js:30:3 › TS-L2 Predlog termina in sprejem › TC-L2-01: predloga ni mogoče poslati brez imena ali brez datuma (733ms)
+  x   7 tests\TS-L2-predlog-termina.spec.js:65:3 › TS-L2 Predlog termina in sprejem › TC-L2-02: udeleženec predlaga termin, organizator ga sprejme, termin je na voljo za glasovanje (6.6s)
+  x   8 tests\TS-L2-predlog-termina.spec.js:149:3 › TS-L2 Predlog termina in sprejem › TC-L2-03: sprejeti termin ima enako trajanje kot ostali termini [INC-04] (5.7s)
+  x   9 tests\TS-L2-predlog-termina.spec.js:171:3 › TS-L2 Predlog termina in sprejem › TC-L2-04: zavrnjen predlog ostane zavrnjen po ponovnem nalaganju [INC-05] (3.7s)
+  x  10 tests\TS-L2-predlog-termina.spec.js:194:3 › TS-L2 Predlog termina in sprejem › TC-L2-05: podrobnosti predloga prikažejo predlagani datum in uro [INC-06] (3.6s)
+  ok 11 tests\TS-L3-potrditev-termina.spec.js:69:3 › TS-L3 Potrditev termina in .ics › TC-L3-01: termina ni mogoče potrditi brez izbire; rezultati glasovanja so prikazani (542ms)
+  ok 12 tests\TS-L3-potrditev-termina.spec.js:96:3 › TS-L3 Potrditev termina in .ics › TC-L3-02: organizator potrdi termin, udeleženci z e-pošto prejmejo .ics (1.0s)
+  x  13 tests\TS-L3-potrditev-termina.spec.js:165:3 › TS-L3 Potrditev termina in .ics › TC-L3-03: obvestilo udeležencu je veljavna zahteva za ponudnika e-pošte [INC-07] (131ms)
+  ok 14 tests\TS-L3-potrditev-termina.spec.js:181:3 › TS-L3 Potrditev termina in .ics › TC-L3-04: zaključene ankete ni mogoče ponovno potrditi (546ms)
+  x  15 tests\TS-L3-potrditev-termina.spec.js:200:3 › TS-L3 Potrditev termina in .ics › TC-L3-05: po potrditvi glasovanje ni več mogoče [INC-08] (135ms)
+  x  16 tests\TS-L3-potrditev-termina.spec.js:217:3 › TS-L3 Potrditev termina in .ics › TC-L3-06: potrditev s terminom, ki ne pripada anketi, je zavrnjena [INC-09] (277ms)
+  x  17 tests\TS-L3-potrditev-termina.spec.js:236:3 › TS-L3 Potrditev termina in .ics › TC-L3-07: potrditev sprejetega predloga obvesti udeležence z .ics [INC-10] (30.1s)
+  x  18 tests\TS-L3-potrditev-termina.spec.js:278:3 › TS-L3 Potrditev termina in .ics › TC-L3-08: čas v .ics ustreza izbranemu lokalnemu terminu [INC-11] (236ms)
+
+
+  1) tests\TS-L2-predlog-termina.spec.js:65:3 › TS-L2 Predlog termina in sprejem › TC-L2-02: udeleženec predlaga termin, organizator ga sprejme, termin je na voljo za glasovanje › 4. Klikni »Sprejmi → dodaj v poll« 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('form div.cursor-pointer')
+    Expected: 3
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" with timeout 5000ms
+      - waiting for locator('form div.cursor-pointer')
+        9 × locator resolved to 2 elements
+          - unexpected value "2"
+
+
+       99 |       await expect(admin.getByText("Predlogi udeležencev")).toBeHidden();
+      100 |       const cards = admin.locator("form div.cursor-pointer");
+    > 101 |       await expect(cards).toHaveCount(3);
+          |                           ^
+      102 |       await expect(cards.nth(2)).toContainText("17:00");
+      103 |       await evidence(admin, testInfo, "TC-L2-02_3_sprejet");
+      104 |     });
+        at C:\Users\lenar\Documents\Šola\FERI\3. Letnik\ZK\Repo\EventEase\e2e\tests\TS-L2-predlog-termina.spec.js:101:27
+        at C:\Users\lenar\Documents\Šola\FERI\3. Letnik\ZK\Repo\EventEase\e2e\tests\TS-L2-predlog-termina.spec.js:97:5
+
+    attachment #1: TC-L2-02_1_predlog (image/png) ──────────────────────────────────────────────────
+    test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\attachments\TC-L2-02-1-predlog-e20c3eb2883612889dcb10c82d013add57ff7237.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: TC-L2-02_2_skrbnik-predlog (image/png) ──────────────────────────────────────────
+    test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\attachments\TC-L2-02-2-skrbnik-predlog-f1a0f6efb9bd36a2152ac440784ccdd9417f9fad.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\TS-L2-predlog-termina-TS-L-9f1b5-n-je-na-voljo-za-glasovanje\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests\TS-L3-potrditev-termina.spec.js:236:3 › TS-L3 Potrditev termina in .ics › TC-L3-07: potrditev sprejetega predloga obvesti udeležence z .ics [INC-10] 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('form div.cursor-pointer').filter({ hasText: '17:00' })
+
+
+      214 |
+      215 |     await page.goto(adminUrl(poll));
+    > 216 |     await page.locator("form div.cursor-pointer").filter({ hasText: "17:00" }).click();
+          |                                                                                ^
+      217 |     await page.getByRole("button", { name: "Potrdi izbran termin in obvesti vse" }).click();
+      218 |     await expect(page.getByText("Vsi udeleženci so bili obveščeni")).toBeVisible();
+      219 |     await evidence(page, testInfo, "TC-L3-07_trdi-da-so-obvesceni");
+        at C:\Users\lenar\Documents\Šola\FERI\3. Letnik\ZK\Repo\EventEase\e2e\tests\TS-L3-potrditev-termina.spec.js:216:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\TS-L3-potrditev-termina-TS-95a9f-ti-udeležence-z-ics-INC-10-\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\TS-L3-potrditev-termina-TS-95a9f-ti-udeležence-z-ics-INC-10-\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\TS-L3-potrditev-termina-TS-95a9f-ti-udeležence-z-ics-INC-10-\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\TS-L3-potrditev-termina-TS-95a9f-ti-udeležence-z-ics-INC-10-\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests\TS-L2-predlog-termina.spec.js:65:3 › TS-L2 Predlog termina in sprejem › TC-L2-02: udeleženec predlaga termin, organizator ga sprejme, termin je na voljo za glasovanje 
+    tests\TS-L3-potrditev-termina.spec.js:236:3 › TS-L3 Potrditev termina in .ics › TC-L3-07: potrditev sprejetega predloga obvesti udeležence z .ics [INC-10] 
+  16 passed (1.2m)
