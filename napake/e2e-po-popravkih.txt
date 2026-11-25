@@ -1,0 +1,24 @@
+
+Running 18 tests using 1 worker
+
+  ok  1 tests\TS-L1-ustvarjanje-ankete.spec.js:19:3 › TS-L1 Ustvarjanje ankete › TC-L1-01: organizator ustvari anketo z dvema terminoma in prejme obe povezavi (4.5s)
+  ok  2 tests\TS-L1-ustvarjanje-ankete.spec.js:90:3 › TS-L1 Ustvarjanje ankete › TC-L1-02: brez obveznih podatkov anketa ni ustvarjena (1.8s)
+  x   3 tests\TS-L1-ustvarjanje-ankete.spec.js:124:3 › TS-L1 Ustvarjanje ankete › TC-L1-03: neveljaven e-naslov organizatorja je zavrnjen [INC-01] (4.2s)
+  ok  4 tests\TS-L1-ustvarjanje-ankete.spec.js:145:3 › TS-L1 Ustvarjanje ankete › TC-L1-04: naslov iz samih presledkov je zavrnjen [INC-02] (1.0s)
+  x   5 tests\TS-L1-ustvarjanje-ankete.spec.js:163:3 › TS-L1 Ustvarjanje ankete › TC-L1-05: strežnik (API) zavrne neveljavno anketo [INC-03] (37ms)
+  ok  6 tests\TS-L2-predlog-termina.spec.js:30:3 › TS-L2 Predlog termina in sprejem › TC-L2-01: predloga ni mogoče poslati brez imena ali brez datuma (758ms)
+  ok  7 tests\TS-L2-predlog-termina.spec.js:65:3 › TS-L2 Predlog termina in sprejem › TC-L2-02: udeleženec predlaga termin, organizator ga sprejme, termin je na voljo za glasovanje (1.9s)
+  x   8 tests\TS-L2-predlog-termina.spec.js:149:3 › TS-L2 Predlog termina in sprejem › TC-L2-03: sprejeti termin ima enako trajanje kot ostali termini [INC-04] (615ms)
+  x   9 tests\TS-L2-predlog-termina.spec.js:171:3 › TS-L2 Predlog termina in sprejem › TC-L2-04: zavrnjen predlog ostane zavrnjen po ponovnem nalaganju [INC-05] (3.6s)
+  ok 10 tests\TS-L2-predlog-termina.spec.js:196:3 › TS-L2 Predlog termina in sprejem › TC-L2-05: podrobnosti predloga prikažejo predlagani datum in uro [INC-06] (539ms)
+  ok 11 tests\TS-L3-potrditev-termina.spec.js:69:3 › TS-L3 Potrditev termina in .ics › TC-L3-01: termina ni mogoče potrditi brez izbire; rezultati glasovanja so prikazani (527ms)
+  ok 12 tests\TS-L3-potrditev-termina.spec.js:96:3 › TS-L3 Potrditev termina in .ics › TC-L3-02: organizator potrdi termin, udeleženci z e-pošto prejmejo .ics (996ms)
+  x  13 tests\TS-L3-potrditev-termina.spec.js:166:3 › TS-L3 Potrditev termina in .ics › TC-L3-03: obvestilo udeležencu je veljavna zahteva za ponudnika e-pošte [INC-07] (102ms)
+  ok 14 tests\TS-L3-potrditev-termina.spec.js:182:3 › TS-L3 Potrditev termina in .ics › TC-L3-04: zaključene ankete ni mogoče ponovno potrditi (538ms)
+  x  15 tests\TS-L3-potrditev-termina.spec.js:201:3 › TS-L3 Potrditev termina in .ics › TC-L3-05: po potrditvi glasovanje ni več mogoče [INC-08] (149ms)
+  x  16 tests\TS-L3-potrditev-termina.spec.js:218:3 › TS-L3 Potrditev termina in .ics › TC-L3-06: potrditev s terminom, ki ne pripada anketi, je zavrnjena [INC-09] (258ms)
+  x  17 tests\TS-L3-potrditev-termina.spec.js:237:3 › TS-L3 Potrditev termina in .ics › TC-L3-07: potrditev sprejetega predloga obvesti udeležence z .ics [INC-10] (689ms)
+  x  18 tests\TS-L3-potrditev-termina.spec.js:279:3 › TS-L3 Potrditev termina in .ics › TC-L3-08: čas v .ics ustreza izbranemu lokalnemu terminu [INC-11] (127ms)
+::notice title=🎭 Playwright Run Summary::  18 passed (25.2s)
+
+  18 passed (25.2s)

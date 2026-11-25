@@ -1,0 +1,164 @@
+{
+  "_opis": "Napake iz funkcionalnih testov TS-L1..TS-L3 (naloga 3, Lenart Beršnak) za vpis v MantisBT. Vir: porocilo_naloga3.md, pogl. 1.1 in 6. Vpis: node skripte/vpis.mjs",
+  "privzeto": {
+    "version": "1.0 (6bad6db)",
+    "target_version": "1.1",
+    "handler": "lenart",
+    "reproducibility": "always",
+    "platform": "Docker Desktop 29.5.2",
+    "os": "Windows 11",
+    "os_build": "10.0.26200"
+  },
+  "kriticnost": {
+    "K": { "severity": "block",   "priority": "urgent", "due_date": "2026-11-28" },
+    "V": { "severity": "major",   "priority": "high",   "due_date": "2026-12-02" },
+    "S": { "severity": "minor",   "priority": "normal", "due_date": "2026-12-09" },
+    "N": { "severity": "trivial", "priority": "low",    "due_date": "2026-12-23" }
+  },
+  "napake": [
+    {
+      "id": "INC-01", "kriticnost": "S", "tip": "Pomanjkljivost", "kategorija": "Frontend", "testni_primer": "TC-L1-03", "scenarij": "TS-L1",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "naslov": "Neveljaven e-naslov organizatorja je sprejet",
+      "opis": "Obrazec za ustvarjanje ankete sprejme e-naslov organizatorja brez znaka @. Anketa se ustvari, organizator pa nato ne prejme nobenega obvestila (novi glasovi, potrditev termina).",
+      "koraki": "1. Na začetni strani klikni »Ustvari dogodek«.\n2. Vnesi naslov in e-pošto organizatorja »organizator.eventease.test«.\n3. Izberi en termin na koledarju.\n4. Klikni »Ustvari in deli«.",
+      "pricakovano": "Prikaže se sporočilo o neveljavnem e-naslovu, anketa ni ustvarjena.",
+      "dejansko": "Anketa je ustvarjena, prikažeta se povezavi za deljenje.",
+      "dodatno": "Vzrok: CreateEventPage.jsx:106 preveri le, ali polje ni prazno; obrazec ima noValidate (:408), zato kontrola brskalnika za type=\"email\" ne deluje. Obrazec za vabila (handleAddEmail) regularni izraz za e-naslov že uporablja.\nPredlog: ponovno uporabiti isti emailRegex tudi za e-naslov organizatorja.\nAvtomatski test: e2e/tests/TS-L1-ustvarjanje-ankete.spec.js (test.fail INC-01).",
+      "dokaz": "e2e/dokazi/TC-L1-03_neveljaven-email.png",
+      "povezave": [{ "z": "INC-03", "tip": "related-to" }]
+    },
+    {
+      "id": "INC-02", "kriticnost": "N", "tip": "Napaka", "kategorija": "Frontend", "testni_primer": "TC-L1-04", "scenarij": "TS-L1",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "naslov": "Naslov dogodka iz samih presledkov je sprejet",
+      "opis": "Preverjanje obveznega naslova dogodka ne odstrani presledkov, zato se ustvari anketa brez vidnega naslova.",
+      "koraki": "1. Klikni »Ustvari dogodek«.\n2. Kot naslov vnesi tri presledke »   «, vnesi veljaven e-naslov organizatorja.\n3. Izberi termin.\n4. Klikni »Ustvari in deli«.",
+      "pricakovano": "Prikaže se »Prosimo, vnesite naslov dogodka.«, anketa ni ustvarjena.",
+      "dejansko": "Anketa brez vidnega naslova je ustvarjena.",
+      "dodatno": "Vzrok: CreateEventPage.jsx:102 »if (!formData.title)« brez trim().\nPredlog: preveriti formData.title.trim().\nAvtomatski test: e2e/tests/TS-L1-ustvarjanje-ankete.spec.js (test.fail INC-02).",
+      "dokaz": "e2e/dokazi/TC-L1-04_prazen-naslov.png",
+      "povezave": [{ "z": "INC-03", "tip": "related-to" }]
+    },
+    {
+      "id": "INC-03", "kriticnost": "S", "tip": "Pomanjkljivost", "kategorija": "Backend (API)", "testni_primer": "TC-L1-05", "scenarij": "TS-L1",
+      "brskalnik": "ni vezano na brskalnik (klic API, Playwright request)",
+      "naslov": "API za ustvarjanje ankete ne validira vhoda",
+      "opis": "POST /api/polls sprejme in shrani neveljavne ankete. Validacija obstaja samo v brskalniku in jo je mogoče zaobiti z neposrednim klicem API.",
+      "koraki": "Pošlji POST /api/polls z:\n(a) naslovom »   «,\n(b) organizer_email »ni-email«,\n(c) time_slots [],\n(d) terminom, katerega konec je pred začetkom.",
+      "pricakovano": "HTTP 400 za vsak primer, anketa ni shranjena.",
+      "dejansko": "HTTP 201 v vseh štirih primerih, ankete so shranjene.",
+      "dodatno": "Vzrok: routes.zig createPoll vhod le razčleni in vstavi v bazo.\nPredlog: na strežniku preveriti naslov (trim), obliko e-naslova, vsaj en termin in konec > začetek; ob napaki vrniti 400.\nAvtomatski test: e2e/tests/TS-L1-ustvarjanje-ankete.spec.js (test.fail INC-03).",
+      "dokaz": null,
+      "povezave": []
+    },
+    {
+      "id": "INC-04", "kriticnost": "V", "tip": "Napaka", "kategorija": "Backend (API)", "testni_primer": "TC-L2-03", "scenarij": "TS-L2",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "naslov": "Sprejeti predlog termina ima trajanje 0 (konec = začetek)",
+      "opis": "Ko organizator sprejme predlog udeleženca, se v anketo doda termin, katerega konec je enak začetku. Vsi ostali termini trajajo 1 uro.",
+      "koraki": "1. Udeleženec v anketi predlaga 12. dan naslednjega meseca ob 17:00.\n2. Organizator v skrbniškem pogledu predlog izbere in klikne »Sprejmi → dodaj v poll«.\n3. Preveri termine ankete (GET /api/polls/share/<token>).",
+      "pricakovano": "Nov termin 17:00–18:00 (enako trajanje kot termini, ustvarjeni v koledarju).",
+      "dejansko": "start_time = end_time = 17:00.",
+      "dodatno": "Vzrok: routes.zig:954 »const end_time = start_time; // suggestions don't need a real end time«; acceptSuggestion ga prepiše v time_slots, kjer konec je potreben.\nPosledica: INC-10 (obvestila z .ics se ne pošljejo).\nAvtomatski test: e2e/tests/TS-L2-predlog-termina.spec.js (test.fail INC-04).",
+      "dokaz": null,
+      "povezave": []
+    },
+    {
+      "id": "INC-05", "kriticnost": "S", "tip": "Napaka", "kategorija": "Frontend", "testni_primer": "TC-L2-04", "scenarij": "TS-L2",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "naslov": "Zavrnitev predloga termina se ne shrani",
+      "opis": "Gumb »Zavrni« pri predlogu udeleženca spremeni le stanje v brskalniku. Po ponovnem nalaganju strani je zavrnjeni predlog spet med čakajočimi.",
+      "koraki": "1. Anketa z dvema predlogoma udeležencev.\n2. V skrbniškem pogledu zavrni enega – števec pokaže (1).\n3. Osveži stran.",
+      "pricakovano": "Števec predlogov ostane (1), zavrnjen predlog ni več prikazan.",
+      "dejansko": "Števec pokaže (2), zavrnjen predlog je spet med čakajočimi.",
+      "dodatno": "Vzrok: AdminFinalizeView.jsx:74 handleSuggestionAction pri »reject« spremeni le lokalno stanje (:111); v backendu ni poti za zavrnitev predloga.\nPredlog: dodati POST /api/polls/admin/<token>/reject-suggestion (status 'rejected') in ga klicati iz vmesnika.\nAvtomatski test: e2e/tests/TS-L2-predlog-termina.spec.js (test.fail INC-05).",
+      "dokaz": "e2e/dokazi/TC-L2-04_po-osvezitvi.png",
+      "povezave": []
+    },
+    {
+      "id": "INC-06", "kriticnost": "N", "tip": "Napaka", "kategorija": "Frontend", "testni_primer": "TC-L2-05", "scenarij": "TS-L2",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "naslov": "Podrobnosti predloga ne prikažejo predlaganega datuma in ure",
+      "opis": "V skrbniškem pogledu se ob kliku na predlagani dan prikaže »Predlog od Ana:« brez datuma in ure.",
+      "koraki": "1. Udeleženka Ana predlaga 12. dan naslednjega meseca ob 17:00.\n2. Organizator odpre skrbniški pogled.\n3. V koledarju predlogov klikne predlagani dan.",
+      "pricakovano": "»Predlog od Ana: <datum> ob 17:00«.",
+      "dejansko": "»Predlog od Ana:« – datum in ura manjkata.",
+      "dodatno": "Vzrok: AdminFinalizeView.jsx:282 seznam suggestions za koledar nima polja start_time, :302 pa ga bere.\nPredlog: v seznam dodati start_time.\nAvtomatski test: e2e/tests/TS-L2-predlog-termina.spec.js (test.fail INC-06).",
+      "dokaz": "e2e/dokazi/TC-L2-05_podrobnosti-predloga.png",
+      "povezave": []
+    },
+    {
+      "id": "INC-07", "kriticnost": "K", "tip": "Napaka", "kategorija": "E-pošta in .ics", "testni_primer": "TC-L3-03", "scenarij": "TS-L3",
+      "brskalnik": "ni vezano na brskalnik (zahteva backend → Resend)",
+      "naslov": "E-pošta udeležencem s priponko .ics je neveljavna zahteva (neveljaven JSON)",
+      "opis": "Ob potrditvi termina backend udeležencem pošlje e-pošto s priponko event.ics. Telo zahteve za ponudnika Resend ni veljaven JSON, zato ga pravi Resend zavrne: udeleženci ne prejmejo .ics, kar je osrednji namen funkcionalnosti potrditve termina.",
+      "koraki": "1. Anketa z udeležencema z e-naslovom (Ana, Cene).\n2. Organizator potrdi termin.\n3. Preglej zahteve v odložišču e-pošte (e2e/.outbox) in jih razčleni z JSON.parse.",
+      "pricakovano": "Telo vsake zahteve je veljaven JSON.",
+      "dejansko": "E-pošta organizatorju je veljavna, obe e-pošti udeležencem pa ne (»Bad control character in string literal«): v polju text so dobesedne nove vrstice in neubežani narekovaji.",
+      "dodatno": "Vzrok: routes.zig:232 sendEmailWithIcs vstavi besedilo v JSON brez ubežanja (za razliko od sendEmail). JSON se v ukaz lupine vstavi v enojnih narekovajih (:243), zato naslov ali ime z ' pokvari ukaz.\nVsebina .ics je pravilna (TC-L3-02), napačna je samo ovojnica.\nPredlog: JSON zgraditi s std.json in ga podati prek datoteke (-d @file), kot to dela sendEmail.\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-07).",
+      "dokaz": null,
+      "povezave": []
+    },
+    {
+      "id": "INC-08", "kriticnost": "S", "tip": "Pomanjkljivost", "kategorija": "Backend (API)", "testni_primer": "TC-L3-05", "scenarij": "TS-L3",
+      "brskalnik": "ni vezano na brskalnik (klic API, Playwright request)",
+      "naslov": "Glasovanje je mogoče tudi po potrditvi termina",
+      "opis": "Vmesnik po potrditvi obrazca za glasovanje ne prikaže, API pa glas za zaključeno anketo sprejme in o njem obvesti organizatorja.",
+      "koraki": "1. Organizator potrdi termin ankete.\n2. Pošlji POST /api/polls/share/<token>/vote z novim glasom.",
+      "pricakovano": "HTTP 409, glas ni shranjen.",
+      "dejansko": "HTTP 201, glas je shranjen (4 namesto 3), organizator prejme obvestilo o novem glasu.",
+      "dodatno": "Vzrok: routes.zig submitVote ne preveri is_finalized.\nPredlog: v submitVote zavrniti glas za zaključeno anketo (409).\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-08).",
+      "dokaz": null,
+      "povezave": []
+    },
+    {
+      "id": "INC-09", "kriticnost": "S", "tip": "Napaka", "kategorija": "Backend (API)", "testni_primer": "TC-L3-06", "scenarij": "TS-L3",
+      "brskalnik": "ni vezano na brskalnik (klic API, Playwright request)",
+      "naslov": "Potrditev s terminom, ki ne pripada anketi, je sprejeta",
+      "opis": "Potrditev ankete ne preveri, da izbrani termin pripada tej anketi. Anketa se lahko zaključi s terminom druge ankete; neobstoječ termin vrne napako strežnika.",
+      "koraki": "(a) finalize ankete B s final_slot_id termina ankete A.\n(b) finalize ankete C z neobstoječim UUID termina.",
+      "pricakovano": "HTTP 400, anketi ostaneta odprti.",
+      "dejansko": "(a) HTTP 200, anketa B je zaključena s terminom ankete A. (b) HTTP 500.",
+      "dodatno": "Vzrok: routes.zig:1013 najprej zaključi anketo in šele nato (:1018) poišče termin, brez pogoja poll_id. submitVote takšno preverjanje že ima (WHERE id = $1 AND poll_id = $2).\nPredlog: najprej preveriti termin z poll_id, nato zaključiti.\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-09).",
+      "dokaz": null,
+      "povezave": []
+    },
+    {
+      "id": "INC-10", "kriticnost": "V", "tip": "Napaka", "kategorija": "E-pošta in .ics", "testni_primer": "TC-L3-07", "scenarij": "TS-L3",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "naslov": "Potrditev termina iz predloga ne obvesti udeležencev, vmesnik trdi nasprotno",
+      "opis": "Če organizator potrdi termin, ki je nastal iz sprejetega predloga, udeleženci ne prejmejo e-pošte z .ics. Vmesnik kljub temu sporoči, da so bili vsi udeleženci obveščeni.",
+      "koraki": "1. Udeleženec predlaga 12. dan ob 17:00, organizator predlog sprejme.\n2. Ana (z e-naslovom) glasuje »da« za ta termin.\n3. Organizator ta termin potrdi v vmesniku.",
+      "pricakovano": "Ana prejme e-pošto s priponko event.ics.",
+      "dejansko": "E-pošte ni; v dnevniku »Failed to send finalization email to Ana: error.InvalidTimeRange«. Vmesnik prikaže »Vsi udeleženci so bili obveščeni o izbranem terminu z datoteko .ics«.",
+      "dodatno": "Vzrok: INC-04 (trajanje 0); ics.zig:171 pravilno zavrne end <= start, napaka pa se v finalizePoll le zapiše v dnevnik. Sporočilo v FinalizedView.jsx:177 je fiksno.\nPredlog: popraviti INC-04; vmesnik naj sporoči, koliko obvestil ni bilo poslanih.\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-10).",
+      "dokaz": "e2e/dokazi/TC-L3-07_trdi-da-so-obvesceni.png",
+      "povezave": [{ "z": "INC-04", "tip": "child-of" }]
+    },
+    {
+      "id": "INC-11", "kriticnost": "V", "tip": "Napaka", "kategorija": "E-pošta in .ics", "testni_primer": "TC-L3-08", "scenarij": "TS-L3",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1), timezoneId Europe/Ljubljana",
+      "naslov": "Čas v datoteki .ics je zamaknjen za 1–2 uri",
+      "opis": "Termin, izbran v Sloveniji ob 14:00, je v .ics zapisan kot 14:00 UTC. Koledar ga prikaže ob 15:00 (poleti ob 16:00), spletna stran pa hkrati prikazuje 14:00.",
+      "koraki": "1. Ustvari anketo s terminom 10. dan naslednjega meseca ob 14:00 (brskalnik v časovnem pasu Europe/Ljubljana).\n2. Potrdi ta termin.\n3. Preberi DTSTART v priponki event.ics.",
+      "pricakovano": "DTSTART:<datum>T130000Z (14:00 CET).",
+      "dejansko": "DTSTART:<datum>T140000Z, kar je 15:00 CET.",
+      "dodatno": "Vzrok: frontend pošilja lokalni čas brez zamika (formatBackendSlot), PostgreSQL ga shrani kot UTC. Omejitev je opisana že v porocilo_naloga2.md, pogl. 7.\nPredlog: frontend naj pošilja čas z zamikom (ISO 8601 z ofsetom ali UTC).\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-11).",
+      "dokaz": null,
+      "povezave": []
+    },
+    {
+      "id": "D-01", "kriticnost": "N", "tip": "Nedoslednost", "kategorija": "Dokumentacija", "testni_primer": "pregled dokumentacije (naloga 3, pogl. 1.1)", "scenarij": "dokumentacija",
+      "brskalnik": "ni vezano na brskalnik",
+      "naslov": "README opisuje lokalno e-pošto prek Mailpita, ki je backend ne uporablja",
+      "opis": "README navaja: »Lokalni e-maili so onemogočeni (DISABLE_EMAILS=true). Mailpit UI na http://localhost:8025.« Backend Mailpita ne uporablja (pot z msmtp je v routes.zig zakomentirana) in e-pošto pošilja izključno prek Resend API. Lokalno zato e-pošte ni mogoče videti nikjer.",
+      "koraki": "1. Zaženi aplikacijo po navodilih iz README (docker compose up).\n2. Ustvari anketo in oddaj glas.\n3. Odpri http://localhost:8025.",
+      "pricakovano": "V Mailpitu je vidno obvestilo o novem glasu (kot opisuje README).",
+      "dejansko": "Mailpit je prazen; backend e-pošte ne pošlje (DISABLE_EMAILS=true), pot z msmtp/Mailpit je zakomentirana.",
+      "dodatno": "Predlog: posodobiti README (Resend, DISABLE_EMAILS, testni dvojnik iz e2e/) in odstraniti storitev mailpit iz compose.yaml ali jo ponovno povezati.",
+      "dokaz": null,
+      "povezave": []
+    }
+  ]
+}

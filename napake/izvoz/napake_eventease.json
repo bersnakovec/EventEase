@@ -1,0 +1,1058 @@
+{
+  "projekt": "EventEase",
+  "izvozeno": "2026-11-25T14:31:36.398Z",
+  "napake": [
+    {
+      "id": 1,
+      "oznaka": "INC-01",
+      "povzetek": "[INC-01] Neveljaven e-naslov organizatorja je sprejet",
+      "tip": "Pomanjkljivost",
+      "kriticnost": "srednja",
+      "prioriteta": "normalna",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Frontend",
+      "testni_primer": "TC-L1-03",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-09T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:08+01:00",
+      "posodobljeno": "2026-11-25T15:28:14+01:00",
+      "opis": "Obrazec za ustvarjanje ankete sprejme e-naslov organizatorja brez znaka @. Anketa se ustvari, organizator pa nato ne prejme nobenega obvestila (novi glasovi, potrditev termina).",
+      "koraki": "1. Na začetni strani klikni »Ustvari dogodek«.\n2. Vnesi naslov in e-pošto organizatorja »organizator.eventease.test«.\n3. Izberi en termin na koledarju.\n4. Klikni »Ustvari in deli«.",
+      "pricakovani_rezultat": "Prikaže se sporočilo o neveljavnem e-naslovu, anketa ni ustvarjena.",
+      "dejanski_rezultat": "Anketa je ustvarjena, prikažeta se povezavi za deljenje.",
+      "dodatne_informacije": "Vzrok: CreateEventPage.jsx:106 preveri le, ali polje ni prazno; obrazec ima noValidate (:408), zato kontrola brskalnika za type=\"email\" ne deluje. Obrazec za vabila (handleAddEmail) regularni izraz za e-naslov že uporablja.\nPredlog: ponovno uporabiti isti emailRegex tudi za e-naslov organizatorja.\nAvtomatski test: e2e/tests/TS-L1-ustvarjanje-ankete.spec.js (test.fail INC-01).",
+      "oznake": [
+        "naloga3",
+        "TS-L1"
+      ],
+      "povezave": [
+        {
+          "tip": "Je v povezavi z",
+          "napaka": 3
+        }
+      ],
+      "priloge": [
+        "TC-L1-03_neveljaven-email.png"
+      ],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L1"
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Datoteka je dodana: TC-L1-03_neveljaven-email.png"
+        },
+        {
+          "cas": "2026-11-25T15:28:14+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Relacija dodana"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "oznaka": "INC-02",
+      "povzetek": "[INC-02] Naslov dogodka iz samih presledkov je sprejet",
+      "tip": "Napaka",
+      "kriticnost": "nizka",
+      "prioriteta": "nizka",
+      "stanje": "zaprto",
+      "razresitev": "popravljeno",
+      "kategorija": "Frontend",
+      "testni_primer": "TC-L1-04",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": "1.1",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-23T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:08+01:00",
+      "posodobljeno": "2026-11-25T15:30:17+01:00",
+      "opis": "Preverjanje obveznega naslova dogodka ne odstrani presledkov, zato se ustvari anketa brez vidnega naslova.",
+      "koraki": "1. Klikni »Ustvari dogodek«.\n2. Kot naslov vnesi tri presledke »   «, vnesi veljaven e-naslov organizatorja.\n3. Izberi termin.\n4. Klikni »Ustvari in deli«.",
+      "pricakovani_rezultat": "Prikaže se »Prosimo, vnesite naslov dogodka.«, anketa ni ustvarjena.",
+      "dejanski_rezultat": "Anketa brez vidnega naslova je ustvarjena.",
+      "dodatne_informacije": "Vzrok: CreateEventPage.jsx:102 »if (!formData.title)« brez trim().\nPredlog: preveriti formData.title.trim().\nAvtomatski test: e2e/tests/TS-L1-ustvarjanje-ankete.spec.js (test.fail INC-02).",
+      "oznake": [
+        "naloga3",
+        "TS-L1"
+      ],
+      "povezave": [
+        {
+          "tip": "Je v povezavi z",
+          "napaka": 3
+        }
+      ],
+      "priloge": [
+        "TC-L1-04_prazen-naslov.png"
+      ],
+      "opombe": [
+        {
+          "cas": "2026-11-25T15:30:16+01:00",
+          "avtor": "lenart",
+          "besedilo": "Popravljeno v commitu 4278cae: CreateEventPage.jsx preverja formData.title.trim(), zato naslov iz samih presledkov ni sprejet."
+        },
+        {
+          "cas": "2026-11-25T15:30:17+01:00",
+          "avtor": "lenart",
+          "besedilo": "Preverjeno z E2E: TC-L1-04 je uspešen brez oznake test.fail (Playwright 1.56.1, Chromium 141). Celoten nabor 18/18 po pričakovanjih, lint in testi enot (105/105) uspešni. Dokaz: napake/dokazi/INC-02_po-popravku_TC-L1-04.png"
+        }
+      ],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L1"
+        },
+        {
+          "cas": "2026-11-25T15:28:08+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:09+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Datoteka je dodana: TC-L1-04_prazen-naslov.png"
+        },
+        {
+          "cas": "2026-11-25T15:28:15+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Relacija dodana"
+        },
+        {
+          "cas": "2026-11-25T15:30:16+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Beležka je dodana: 0000001"
+        },
+        {
+          "cas": "2026-11-25T15:30:17+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Stanje",
+          "polje": "Stanje",
+          "staro": "dodeljeno",
+          "novo": "rešeno"
+        },
+        {
+          "cas": "2026-11-25T15:30:17+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Razrešitev",
+          "polje": "Razrešitev",
+          "staro": "odprto",
+          "novo": "popravljeno"
+        },
+        {
+          "cas": "2026-11-25T15:30:17+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Popravljeno v verziji",
+          "polje": "Popravljeno v verziji",
+          "staro": "",
+          "novo": "1.1"
+        },
+        {
+          "cas": "2026-11-25T15:30:17+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Beležka je dodana: 0000002"
+        },
+        {
+          "cas": "2026-11-25T15:30:17+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Stanje",
+          "polje": "Stanje",
+          "staro": "rešeno",
+          "novo": "zaprto"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "oznaka": "INC-03",
+      "povzetek": "[INC-03] API za ustvarjanje ankete ne validira vhoda",
+      "tip": "Pomanjkljivost",
+      "kriticnost": "srednja",
+      "prioriteta": "normalna",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Backend (API)",
+      "testni_primer": "TC-L1-05",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "ni vezano na brskalnik (klic API, Playwright request)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-09T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:09+01:00",
+      "posodobljeno": "2026-11-25T15:28:15+01:00",
+      "opis": "POST /api/polls sprejme in shrani neveljavne ankete. Validacija obstaja samo v brskalniku in jo je mogoče zaobiti z neposrednim klicem API.",
+      "koraki": "Pošlji POST /api/polls z:\n(a) naslovom »   «,\n(b) organizer_email »ni-email«,\n(c) time_slots [],\n(d) terminom, katerega konec je pred začetkom.",
+      "pricakovani_rezultat": "HTTP 400 za vsak primer, anketa ni shranjena.",
+      "dejanski_rezultat": "HTTP 201 v vseh štirih primerih, ankete so shranjene.",
+      "dodatne_informacije": "Vzrok: routes.zig createPoll vhod le razčleni in vstavi v bazo.\nPredlog: na strežniku preveriti naslov (trim), obliko e-naslova, vsaj en termin in konec > začetek; ob napaki vrniti 400.\nAvtomatski test: e2e/tests/TS-L1-ustvarjanje-ankete.spec.js (test.fail INC-03).",
+      "oznake": [
+        "naloga3",
+        "TS-L1"
+      ],
+      "povezave": [
+        {
+          "tip": "Je v povezavi z",
+          "napaka": 1
+        },
+        {
+          "tip": "Je v povezavi z",
+          "napaka": 2
+        }
+      ],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:09+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:09+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:09+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L1"
+        },
+        {
+          "cas": "2026-11-25T15:28:09+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:14+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Relacija dodana"
+        },
+        {
+          "cas": "2026-11-25T15:28:15+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Relacija dodana"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "oznaka": "INC-04",
+      "povzetek": "[INC-04] Sprejeti predlog termina ima trajanje 0 (konec = začetek)",
+      "tip": "Napaka",
+      "kriticnost": "visoka",
+      "prioriteta": "visoka",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Backend (API)",
+      "testni_primer": "TC-L2-03",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-02T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:10+01:00",
+      "posodobljeno": "2026-11-25T15:28:16+01:00",
+      "opis": "Ko organizator sprejme predlog udeleženca, se v anketo doda termin, katerega konec je enak začetku. Vsi ostali termini trajajo 1 uro.",
+      "koraki": "1. Udeleženec v anketi predlaga 12. dan naslednjega meseca ob 17:00.\n2. Organizator v skrbniškem pogledu predlog izbere in klikne »Sprejmi → dodaj v poll«.\n3. Preveri termine ankete (GET /api/polls/share/<token>).",
+      "pricakovani_rezultat": "Nov termin 17:00–18:00 (enako trajanje kot termini, ustvarjeni v koledarju).",
+      "dejanski_rezultat": "start_time = end_time = 17:00.",
+      "dodatne_informacije": "Vzrok: routes.zig:954 »const end_time = start_time; // suggestions don't need a real end time«; acceptSuggestion ga prepiše v time_slots, kjer konec je potreben.\nPosledica: INC-10 (obvestila z .ics se ne pošljejo).\nAvtomatski test: e2e/tests/TS-L2-predlog-termina.spec.js (test.fail INC-04).",
+      "oznake": [
+        "naloga3",
+        "TS-L2"
+      ],
+      "povezave": [
+        {
+          "tip": "je odvisen od",
+          "napaka": 10
+        }
+      ],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L2"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:16+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Relacija dodana"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "oznaka": "INC-05",
+      "povzetek": "[INC-05] Zavrnitev predloga termina se ne shrani",
+      "tip": "Napaka",
+      "kriticnost": "srednja",
+      "prioriteta": "normalna",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Frontend",
+      "testni_primer": "TC-L2-04",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-09T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:10+01:00",
+      "posodobljeno": "2026-11-25T15:28:10+01:00",
+      "opis": "Gumb »Zavrni« pri predlogu udeleženca spremeni le stanje v brskalniku. Po ponovnem nalaganju strani je zavrnjeni predlog spet med čakajočimi.",
+      "koraki": "1. Anketa z dvema predlogoma udeležencev.\n2. V skrbniškem pogledu zavrni enega – števec pokaže (1).\n3. Osveži stran.",
+      "pricakovani_rezultat": "Števec predlogov ostane (1), zavrnjen predlog ni več prikazan.",
+      "dejanski_rezultat": "Števec pokaže (2), zavrnjen predlog je spet med čakajočimi.",
+      "dodatne_informacije": "Vzrok: AdminFinalizeView.jsx:74 handleSuggestionAction pri »reject« spremeni le lokalno stanje (:111); v backendu ni poti za zavrnitev predloga.\nPredlog: dodati POST /api/polls/admin/<token>/reject-suggestion (status 'rejected') in ga klicati iz vmesnika.\nAvtomatski test: e2e/tests/TS-L2-predlog-termina.spec.js (test.fail INC-05).",
+      "oznake": [
+        "naloga3",
+        "TS-L2"
+      ],
+      "povezave": [],
+      "priloge": [
+        "TC-L2-04_po-osvezitvi.png"
+      ],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L2"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Datoteka je dodana: TC-L2-04_po-osvezitvi.png"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "oznaka": "INC-06",
+      "povzetek": "[INC-06] Podrobnosti predloga ne prikažejo predlaganega datuma in ure",
+      "tip": "Napaka",
+      "kriticnost": "nizka",
+      "prioriteta": "nizka",
+      "stanje": "zaprto",
+      "razresitev": "popravljeno",
+      "kategorija": "Frontend",
+      "testni_primer": "TC-L2-05",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": "1.1",
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-23T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:10+01:00",
+      "posodobljeno": "2026-11-25T15:30:19+01:00",
+      "opis": "V skrbniškem pogledu se ob kliku na predlagani dan prikaže »Predlog od Ana:« brez datuma in ure.",
+      "koraki": "1. Udeleženka Ana predlaga 12. dan naslednjega meseca ob 17:00.\n2. Organizator odpre skrbniški pogled.\n3. V koledarju predlogov klikne predlagani dan.",
+      "pricakovani_rezultat": "»Predlog od Ana: <datum> ob 17:00«.",
+      "dejanski_rezultat": "»Predlog od Ana:« – datum in ura manjkata.",
+      "dodatne_informacije": "Vzrok: AdminFinalizeView.jsx:282 seznam suggestions za koledar nima polja start_time, :302 pa ga bere.\nPredlog: v seznam dodati start_time.\nAvtomatski test: e2e/tests/TS-L2-predlog-termina.spec.js (test.fail INC-06).",
+      "oznake": [
+        "naloga3",
+        "TS-L2"
+      ],
+      "povezave": [],
+      "priloge": [
+        "TC-L2-05_podrobnosti-predloga.png"
+      ],
+      "opombe": [
+        {
+          "cas": "2026-11-25T15:30:18+01:00",
+          "avtor": "lenart",
+          "besedilo": "Popravljeno v commitu 4278cae: AdminFinalizeView.jsx v seznam predlogov za koledar doda start_time, podrobnosti prikažejo »<datum> ob <ura>«."
+        },
+        {
+          "cas": "2026-11-25T15:30:19+01:00",
+          "avtor": "lenart",
+          "besedilo": "Preverjeno z E2E: TC-L2-05 (okrepljen, preverja tudi uro) je uspešen brez oznake test.fail. Prikaz: »Predlog od Ana: 2026-12-12 ob 17:00«. Celoten nabor 18/18. Dokaz: napake/dokazi/INC-06_po-popravku_TC-L2-05.png"
+        }
+      ],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L2"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:10+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Datoteka je dodana: TC-L2-05_podrobnosti-predloga.png"
+        },
+        {
+          "cas": "2026-11-25T15:30:18+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Beležka je dodana: 0000003"
+        },
+        {
+          "cas": "2026-11-25T15:30:19+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Stanje",
+          "polje": "Stanje",
+          "staro": "dodeljeno",
+          "novo": "rešeno"
+        },
+        {
+          "cas": "2026-11-25T15:30:19+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Razrešitev",
+          "polje": "Razrešitev",
+          "staro": "odprto",
+          "novo": "popravljeno"
+        },
+        {
+          "cas": "2026-11-25T15:30:19+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Popravljeno v verziji",
+          "polje": "Popravljeno v verziji",
+          "staro": "",
+          "novo": "1.1"
+        },
+        {
+          "cas": "2026-11-25T15:30:19+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Beležka je dodana: 0000004"
+        },
+        {
+          "cas": "2026-11-25T15:30:19+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Stanje",
+          "polje": "Stanje",
+          "staro": "rešeno",
+          "novo": "zaprto"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "oznaka": "INC-07",
+      "povzetek": "[INC-07] E-pošta udeležencem s priponko .ics je neveljavna zahteva (neveljaven JSON)",
+      "tip": "Napaka",
+      "kriticnost": "kritična",
+      "prioriteta": "nujno",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "E-pošta in .ics",
+      "testni_primer": "TC-L3-03",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "ni vezano na brskalnik (zahteva backend → Resend)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-11-28T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:11+01:00",
+      "posodobljeno": "2026-11-25T15:28:11+01:00",
+      "opis": "Ob potrditvi termina backend udeležencem pošlje e-pošto s priponko event.ics. Telo zahteve za ponudnika Resend ni veljaven JSON, zato ga pravi Resend zavrne: udeleženci ne prejmejo .ics, kar je osrednji namen funkcionalnosti potrditve termina.",
+      "koraki": "1. Anketa z udeležencema z e-naslovom (Ana, Cene).\n2. Organizator potrdi termin.\n3. Preglej zahteve v odložišču e-pošte (e2e/.outbox) in jih razčleni z JSON.parse.",
+      "pricakovani_rezultat": "Telo vsake zahteve je veljaven JSON.",
+      "dejanski_rezultat": "E-pošta organizatorju je veljavna, obe e-pošti udeležencem pa ne (»Bad control character in string literal«): v polju text so dobesedne nove vrstice in neubežani narekovaji.",
+      "dodatne_informacije": "Vzrok: routes.zig:232 sendEmailWithIcs vstavi besedilo v JSON brez ubežanja (za razliko od sendEmail). JSON se v ukaz lupine vstavi v enojnih narekovajih (:243), zato naslov ali ime z ' pokvari ukaz.\nVsebina .ics je pravilna (TC-L3-02), napačna je samo ovojnica.\nPredlog: JSON zgraditi s std.json in ga podati prek datoteke (-d @file), kot to dela sendEmail.\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-07).",
+      "oznake": [
+        "naloga3",
+        "TS-L3"
+      ],
+      "povezave": [],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L3"
+        },
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "oznaka": "INC-08",
+      "povzetek": "[INC-08] Glasovanje je mogoče tudi po potrditvi termina",
+      "tip": "Pomanjkljivost",
+      "kriticnost": "srednja",
+      "prioriteta": "normalna",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Backend (API)",
+      "testni_primer": "TC-L3-05",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "ni vezano na brskalnik (klic API, Playwright request)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-09T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:11+01:00",
+      "posodobljeno": "2026-11-25T15:28:11+01:00",
+      "opis": "Vmesnik po potrditvi obrazca za glasovanje ne prikaže, API pa glas za zaključeno anketo sprejme in o njem obvesti organizatorja.",
+      "koraki": "1. Organizator potrdi termin ankete.\n2. Pošlji POST /api/polls/share/<token>/vote z novim glasom.",
+      "pricakovani_rezultat": "HTTP 409, glas ni shranjen.",
+      "dejanski_rezultat": "HTTP 201, glas je shranjen (4 namesto 3), organizator prejme obvestilo o novem glasu.",
+      "dodatne_informacije": "Vzrok: routes.zig submitVote ne preveri is_finalized.\nPredlog: v submitVote zavrniti glas za zaključeno anketo (409).\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-08).",
+      "oznake": [
+        "naloga3",
+        "TS-L3"
+      ],
+      "povezave": [],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L3"
+        },
+        {
+          "cas": "2026-11-25T15:28:11+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "oznaka": "INC-09",
+      "povzetek": "[INC-09] Potrditev s terminom, ki ne pripada anketi, je sprejeta",
+      "tip": "Napaka",
+      "kriticnost": "srednja",
+      "prioriteta": "normalna",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Backend (API)",
+      "testni_primer": "TC-L3-06",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "ni vezano na brskalnik (klic API, Playwright request)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-09T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:12+01:00",
+      "posodobljeno": "2026-11-25T15:28:12+01:00",
+      "opis": "Potrditev ankete ne preveri, da izbrani termin pripada tej anketi. Anketa se lahko zaključi s terminom druge ankete; neobstoječ termin vrne napako strežnika.",
+      "koraki": "(a) finalize ankete B s final_slot_id termina ankete A.\n(b) finalize ankete C z neobstoječim UUID termina.",
+      "pricakovani_rezultat": "HTTP 400, anketi ostaneta odprti.",
+      "dejanski_rezultat": "(a) HTTP 200, anketa B je zaključena s terminom ankete A. (b) HTTP 500.",
+      "dodatne_informacije": "Vzrok: routes.zig:1013 najprej zaključi anketo in šele nato (:1018) poišče termin, brez pogoja poll_id. submitVote takšno preverjanje že ima (WHERE id = $1 AND poll_id = $2).\nPredlog: najprej preveriti termin z poll_id, nato zaključiti.\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-09).",
+      "oznake": [
+        "naloga3",
+        "TS-L3"
+      ],
+      "povezave": [],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:12+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:12+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:12+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L3"
+        },
+        {
+          "cas": "2026-11-25T15:28:12+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "oznaka": "INC-10",
+      "povzetek": "[INC-10] Potrditev termina iz predloga ne obvesti udeležencev, vmesnik trdi nasprotno",
+      "tip": "Napaka",
+      "kriticnost": "visoka",
+      "prioriteta": "visoka",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "E-pošta in .ics",
+      "testni_primer": "TC-L3-07",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1)",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-02T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:13+01:00",
+      "posodobljeno": "2026-11-25T15:28:16+01:00",
+      "opis": "Če organizator potrdi termin, ki je nastal iz sprejetega predloga, udeleženci ne prejmejo e-pošte z .ics. Vmesnik kljub temu sporoči, da so bili vsi udeleženci obveščeni.",
+      "koraki": "1. Udeleženec predlaga 12. dan ob 17:00, organizator predlog sprejme.\n2. Ana (z e-naslovom) glasuje »da« za ta termin.\n3. Organizator ta termin potrdi v vmesniku.",
+      "pricakovani_rezultat": "Ana prejme e-pošto s priponko event.ics.",
+      "dejanski_rezultat": "E-pošte ni; v dnevniku »Failed to send finalization email to Ana: error.InvalidTimeRange«. Vmesnik prikaže »Vsi udeleženci so bili obveščeni o izbranem terminu z datoteko .ics«.",
+      "dodatne_informacije": "Vzrok: INC-04 (trajanje 0); ics.zig:171 pravilno zavrne end <= start, napaka pa se v finalizePoll le zapiše v dnevnik. Sporočilo v FinalizedView.jsx:177 je fiksno.\nPredlog: popraviti INC-04; vmesnik naj sporoči, koliko obvestil ni bilo poslanih.\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-10).",
+      "oznake": [
+        "naloga3",
+        "TS-L3"
+      ],
+      "povezave": [
+        {
+          "tip": "Potomec",
+          "napaka": 4
+        }
+      ],
+      "priloge": [
+        "TC-L3-07_trdi-da-so-obvesceni.png"
+      ],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L3"
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Datoteka je dodana: TC-L3-07_trdi-da-so-obvesceni.png"
+        },
+        {
+          "cas": "2026-11-25T15:28:16+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Relacija dodana"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "oznaka": "INC-11",
+      "povzetek": "[INC-11] Čas v datoteki .ics je zamaknjen za 1–2 uri",
+      "tip": "Napaka",
+      "kriticnost": "visoka",
+      "prioriteta": "visoka",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "E-pošta in .ics",
+      "testni_primer": "TC-L3-08",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "Chromium 141.0.7390.37 (Playwright 1.56.1), timezoneId Europe/Ljubljana",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-02T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:13+01:00",
+      "posodobljeno": "2026-11-25T15:28:13+01:00",
+      "opis": "Termin, izbran v Sloveniji ob 14:00, je v .ics zapisan kot 14:00 UTC. Koledar ga prikaže ob 15:00 (poleti ob 16:00), spletna stran pa hkrati prikazuje 14:00.",
+      "koraki": "1. Ustvari anketo s terminom 10. dan naslednjega meseca ob 14:00 (brskalnik v časovnem pasu Europe/Ljubljana).\n2. Potrdi ta termin.\n3. Preberi DTSTART v priponki event.ics.",
+      "pricakovani_rezultat": "DTSTART:<datum>T130000Z (14:00 CET).",
+      "dejanski_rezultat": "DTSTART:<datum>T140000Z, kar je 15:00 CET.",
+      "dodatne_informacije": "Vzrok: frontend pošilja lokalni čas brez zamika (formatBackendSlot), PostgreSQL ga shrani kot UTC. Omejitev je opisana že v porocilo_naloga2.md, pogl. 7.\nPredlog: frontend naj pošilja čas z zamikom (ISO 8601 z ofsetom ali UTC).\nAvtomatski test: e2e/tests/TS-L3-potrditev-termina.spec.js (test.fail INC-11).",
+      "oznake": [
+        "naloga3",
+        "TS-L3"
+      ],
+      "povezave": [],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: TS-L3"
+        },
+        {
+          "cas": "2026-11-25T15:28:13+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "oznaka": "D-01",
+      "povzetek": "[D-01] README opisuje lokalno e-pošto prek Mailpita, ki je backend ne uporablja",
+      "tip": "Nedoslednost",
+      "kriticnost": "nizka",
+      "prioriteta": "nizka",
+      "stanje": "dodeljeno",
+      "razresitev": "odprto",
+      "kategorija": "Dokumentacija",
+      "testni_primer": "pregled dokumentacije (naloga 3, pogl. 1.1)",
+      "verzija": "1.0 (6bad6db)",
+      "ciljna_verzija": "1.1",
+      "popravljeno_v": null,
+      "brskalnik": "ni vezano na brskalnik",
+      "okolje": {
+        "platforma": "Docker Desktop 29.5.2",
+        "os": "Windows 11",
+        "verzija_os": "10.0.26200"
+      },
+      "ponovljivost": "vedno",
+      "prijavitelj": "Lenart Beršnak",
+      "dodeljeno": "Lenart Beršnak",
+      "rok": "2026-12-23T23:59:00+01:00",
+      "ustvarjeno": "2026-11-25T15:28:14+01:00",
+      "posodobljeno": "2026-11-25T15:28:14+01:00",
+      "opis": "README navaja: »Lokalni e-maili so onemogočeni (DISABLE_EMAILS=true). Mailpit UI na http://localhost:8025.« Backend Mailpita ne uporablja (pot z msmtp je v routes.zig zakomentirana) in e-pošto pošilja izključno prek Resend API. Lokalno zato e-pošte ni mogoče videti nikjer.",
+      "koraki": "1. Zaženi aplikacijo po navodilih iz README (docker compose up).\n2. Ustvari anketo in oddaj glas.\n3. Odpri http://localhost:8025.",
+      "pricakovani_rezultat": "V Mailpitu je vidno obvestilo o novem glasu (kot opisuje README).",
+      "dejanski_rezultat": "Mailpit je prazen; backend e-pošte ne pošlje (DISABLE_EMAILS=true), pot z msmtp/Mailpit je zakomentirana.",
+      "dodatne_informacije": "Predlog: posodobiti README (Resend, DISABLE_EMAILS, testni dvojnik iz e2e/) in odstraniti storitev mailpit iz compose.yaml ali jo ponovno povezati.",
+      "oznake": [
+        "dokumentacija",
+        "naloga3"
+      ],
+      "povezave": [],
+      "priloge": [],
+      "opombe": [],
+      "zgodovina": [
+        {
+          "cas": "2026-11-25T15:28:14+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Nova zadeva"
+        },
+        {
+          "cas": "2026-11-25T15:28:14+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Dodeljena",
+          "polje": "Dodeljena",
+          "staro": {
+            "id": 0
+          },
+          "novo": {
+            "id": 2,
+            "name": "lenart",
+            "real_name": "Lenart Beršnak",
+            "email": "lenart@eventease.test"
+          }
+        },
+        {
+          "cas": "2026-11-25T15:28:14+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: dokumentacija"
+        },
+        {
+          "cas": "2026-11-25T15:28:14+01:00",
+          "uporabnik": "lenart",
+          "sprememba": "Tag Attached: naloga3"
+        }
+      ]
+    }
+  ]
+}

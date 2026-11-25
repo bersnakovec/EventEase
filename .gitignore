@@ -156,3 +156,12 @@ backend/logic/coverage
 # Obremenitveni test (naloga 4)
 load/.jmeter/
 load/rezultati/*/rezultati.jtl
+
+# MantisBT (naloga 6) – izvorna koda iz mantisbt-2.29.0.zip, ne v repozitorij
+napake/mantisbt/
+
+# MantisBT: sol za šifriranje (lokalna namestitev)
+napake/config/salt_inc.php
+
+# MantisBT: žeton API
+napake/skripte/.token

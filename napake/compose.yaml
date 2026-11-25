@@ -1,0 +1,34 @@
+# Orodje za upravljanje napak (naloga 6): MantisBT + MySQL.
+# Zagon (iz mape napake/):  docker compose up -d --build     →  http://localhost:8989
+# Ustavitev:                docker compose down               (podatki ostanejo v volumnu mantis-db)
+name: eventease-napake
+services:
+  mantis:
+    build: .
+    ports:
+      - "8989:80"
+    volumes:
+      - ./mantisbt:/var/www/html
+      - ./config:/var/www/html/config
+      - ./skripte:/skripte
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Baza ni izpostavljena gostitelju (port 3306 je zaseden z lokalnim MySQL).
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: bugtracker
+      MYSQL_USER: mantis
+      MYSQL_PASSWORD: mantis
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mantis-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-pmantis", "-umantis"]
+      interval: 5s
+      retries: 30
+
+volumes:
+  mantis-db:
