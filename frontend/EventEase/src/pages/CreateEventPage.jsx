@@ -99,7 +99,7 @@ export default function CreateEventWizard({ onCancel }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title) {
+    if (!formData.title.trim()) {
       setNotice({ type: "error", message: "Prosimo, vnesite naslov dogodka." });
       return;
     }

@@ -162,8 +162,8 @@ test.describe("TS-L2 Predlog termina in sprejem", () => {
     await expect(suggestionsSection(page)).toContainText("Predlogi udeležencev(1)", { timeout: 3000 });
   });
 
+  // INC-06 odpravljen (naloga 6, Mantis #6) – oznaka test.fail odstranjena.
   test("TC-L2-05: podrobnosti predloga prikažejo predlagani datum in uro [INC-06]", async ({ page, request }, testInfo) => {
-    test.fail(true, "INC-06: v »Predlog od …:« manjkata datum in ura");
     const poll = await createPoll(request, `Podrobnosti predloga ${RUN}`);
     await apiSuggest(request, poll, "Ana", [`${d12.iso}T17:00:00`]);
 
@@ -175,5 +175,6 @@ test.describe("TS-L2 Predlog termina in sprejem", () => {
     await expect(section.getByText("Predlog od Ana")).toBeVisible();
     await evidence(page, testInfo, "TC-L2-05_podrobnosti-predloga");
     await expect(section.getByText(`Predlog od Ana: ${d12.iso}`)).toBeVisible({ timeout: 3000 });
+    await expect(section.getByText(`Predlog od Ana: ${d12.iso} ob 17:00`)).toBeVisible();
   });
 });

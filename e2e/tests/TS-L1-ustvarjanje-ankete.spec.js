@@ -130,8 +130,8 @@ test.describe("TS-L1 Ustvarjanje ankete", () => {
     expect(posts).toHaveLength(0);
   });
 
+  // INC-02 odpravljen (naloga 6, Mantis #2) – oznaka test.fail odstranjena.
   test("TC-L1-04: naslov iz samih presledkov je zavrnjen [INC-02]", async ({ page }, testInfo) => {
-    test.fail(true, "INC-02: naslov »   « se šteje kot vnesen");
     const posts = recordRequests(page, "POST", "/api/polls");
     await openCreateForm(page);
     await page.getByLabel("Naslov dogodka *").fill("   ");

@@ -4,6 +4,13 @@ import VoteResults from "../components/VoteResults";
 import CalendarPicker from "../components/CalendarPicker";
 import FinalizedView from "./FinalizedView";
 
+/** "2026-12-12 17:00:00+00" ali "2026-12-12T17:00:00" → "2026-12-12 ob 17:00" (INC-06). */
+function formatSuggestionTime(startTime) {
+  if (!startTime) return "";
+  const [date, time = ""] = startTime.split(/[T ]/);
+  return time ? `${date} ob ${time.slice(0, 5)}` : date;
+}
+
 export default function AdminFinalizeView({ eventData: propEventData, onBack }) {
   const { adminToken } = useParams();
   const [searchParams] = useSearchParams();
@@ -283,6 +290,7 @@ export default function AdminFinalizeView({ eventData: propEventData, onBack }) 
                 id: s.id,
                 date: s.start_time.split("T")[0],
                 suggested_by: s.suggested_by,
+                start_time: s.start_time,
               }))}
               onSuggestionSelect={(date, dateSuggestions) => setPendingSuggestion(dateSuggestions[0])}
             />
@@ -299,7 +307,7 @@ export default function AdminFinalizeView({ eventData: propEventData, onBack }) 
                   Predlog od{" "}
                   <span className="font-semibold">{pendingSuggestion.suggested_by}</span>:{" "}
                   <span style={{ color: "var(--color-primary)" }}>
-                    {pendingSuggestion.start_time?.split("T")[0]}
+                    {formatSuggestionTime(pendingSuggestion.start_time)}
                   </span>
                 </p>
                 <div className="flex gap-2 flex-wrap">
